@@ -28,6 +28,8 @@ OPTION B
 USING
 ==
 	
+I've provided you with the base image Ken provided us with.
+
 you can connect to your web IDE via http://localhost:8080
 
 you can connect to your X11 xfce desktop via http://localhost:6901
