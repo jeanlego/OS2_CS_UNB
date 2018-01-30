@@ -25,7 +25,10 @@ OPTION B
 3. docker run -it -d --privileged -p 8080:8080 -p 6901:6901 -p 5901:5901 -v <your_local_workspace_dir>:/workspace jeanlego/os2_cs_unb
 
 4. 	you can connect to your web IDE via http://localhost:8080
-	you can connect to your X11 xfce desktop via http://localhost:6091
+
+	you can connect to your X11 xfce desktop via http://localhost:6901
+	
+	you can connect to your X11 xfce desktop via vnc client thru port 5901
 	
 	user: root
 	pass: letmein
