@@ -38,6 +38,7 @@ you can connect to your X11 xfce desktop via http://localhost:6901
 you can connect to your X11 xfce desktop via vnc client thru port 5901
 
 user: root
+
 pass: letmein
 
 PS. you can use --restart=always if you want the image to keep on booting with your machine
@@ -45,6 +46,7 @@ PS. you can use --restart=always if you want the image to keep on booting with y
 RUNNING QEMU IN GDB
 ================
 clone repo 
+
 copy script to where floppy.img is
 
 run using gdb -x </your/path/to/img>/run_in_gdb.sh
