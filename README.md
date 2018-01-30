@@ -2,6 +2,7 @@ INSTALLING
 ==
 
 1. Enable nested virtualization if docker is running as a VM else skip to 2.
+	
 	follow this guide for windows
 	https://www.timothygruber.com/hyper-v-2/run-a-nested-vm-on-kvm-qemu-vm-in-hyper-v/
 	
