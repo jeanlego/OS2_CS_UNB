@@ -1,0 +1,64 @@
+#!/bin/sh
+
+function printusage ()
+{
+  echo "Usage: fcs-qemu-run-kernel -kernel <kernel> -bootdisk <bootdisk>"
+  echo ""
+  echo "  Manditory options"
+  echo "   --kernel <path to kernel>"
+  echo "   --bootdisk <path to bootdisk image>"
+  echo ""
+}
+
+# Process command line arguments
+while [[ $# -ge 1 ]]
+do
+  arg="$1"
+
+  case $arg in
+      -kernel|--kernel|-k|--k)
+      KERNEL="$2"
+      shift
+      ;;
+      -bootdisk|--bootdisk|-b|--b)
+      BOOTDISK="$2"
+      shift
+      ;;
+      *)
+      printusage
+      exit
+      ;;
+  esac
+  shift # past argument or value
+done
+
+if [ "$KERNEL" == "" ] || [ "$BOOTDISK" == "" ]
+then
+  printusage
+  exit
+fi
+
+if [ ! -f $KERNEL ]
+then
+  echo "Kernel Image not found: $KERNEL"
+  exit
+fi
+
+if [ ! -f $BOOTDISK ]
+then
+  echo "Bootdisk Image not found: $BOOTDISK"
+  exit
+fi
+
+# Prep the bootdisk image with the new kernel
+sudo /sbin/losetup /dev/loop0 floppy.img
+sudo mkdir /mnt2/
+sudo mount /dev/loop0 /mnt2
+sudo cp src/kernel /mnt2/kernel
+sudo umount /dev/loop0
+sudo rm -Rf /mnt2/
+sudo /sbin/losetup -d /dev/loop0
+
+# Run the new kernel via the modified bootdisk image
+qemu-system-x86_64 -fda floppy.img
+#qemu-system-i386 -fda floppy.img
