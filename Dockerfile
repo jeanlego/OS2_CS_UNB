@@ -36,5 +36,4 @@ RUN chmod +x startup.sh
 VOLUME /workspace
 EXPOSE 8080 5901 6901
 
-ENTRYPOINT ["/bin/sh", "./startup.sh"]
-CMD ["root", "letmein"]
+ENTRYPOINT ["/bin/sh", "startup.sh", "root", "letmein"]
