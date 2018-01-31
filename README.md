@@ -35,13 +35,15 @@ you can connect to your web IDE via http://localhost:8080
 
 you can connect to your X11 xfce desktop via http://localhost:6901
 
-you can connect to your X11 xfce desktop via vnc client thru port 5901
+you can connect to your X11 xfce desktop via vnc client through port 5901
 
 user: root
 
 pass: letmein
 
 PS. you can use --restart=always if you want the image to keep on booting with your machine
+
+PPS. You can overwrite some or all of the default values for Cloud9 username, Cloud9 and VNC password, and Cloud9 root folder; with the following options: -e "USERNAME=<username>" -e "PASSWORD=<password>" -e "CLOUD9_ROOT_FOLDER=<path in the docker image file system you want to mount to (e.g. /workspace or /)>"
 
 RUNNING QEMU IN GDB
 ================

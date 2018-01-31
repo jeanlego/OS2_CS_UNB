@@ -17,21 +17,35 @@ RUN dnf erase -y *power* *screensaver* && rm /etc/xdg/autostart/xfce-polkit* && 
 
 RUN ln -s /lib64 /usr/lib/x86_64-linux-gnu
 
+# ------------------------------------------------------------------------------
 # Install Node.js
 RUN curl -L https://raw.githubusercontent.com/c9/install/master/install.sh | bash
 RUN dnf install -y nodejs
 
+# ------------------------------------------------------------------------------
 # Install Cloud9
 RUN git clone https://github.com/c9/core.git /cloud9
 RUN /cloud9/scripts/install-sdk.sh
 RUN sed -i -e 's_127.0.0.1_0.0.0.0_g' /cloud9/configs/standalone.js
 
+# ------------------------------------------------------------------------------
 #cleanup
+RUN dnf clean all
+
+# ------------------------------------------------------------------------------
+# workspace
 RUN mkdir -p /workspace
+
+# ------------------------------------------------------------------------------
+# boot script
+ENV USERNAME="root"
+ENV PASSWORD="letmein"
+ENV CLOUD9_ROOT_FOLDER="/workspace"
 
 ADD startup.sh /
 RUN chmod +x startup.sh
 
+# ------------------------------------------------------------------------------
 # expose port and directory
 VOLUME /workspace
 EXPOSE 8080 5901 6901
