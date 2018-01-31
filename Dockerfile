@@ -59,9 +59,10 @@ RUN echo "xset s noblank & " >> /root/startup.sh
 RUN echo "xset s off & " >> /root/startup.sh
 RUN echo "/usr/bin/startxfce4 --replace " >> /root/startup.sh
 
+RUN chmod +x /root/startup.sh
+
 # expose port and directory
 VOLUME /root
 EXPOSE 8080 5901 6901
 
 ENTRYPOINT ["/bin/sh", "./root/startup.sh"]
-CMD ["root", "letmein"]
