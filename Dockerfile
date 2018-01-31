@@ -34,8 +34,8 @@ RUN echo "#!/bin/bash " > startup.sh
 RUN echo "USER_NAME=$1 " >> startup.sh
 RUN echo "PASSWD=$2 " >> startup.sh
 
-RUN echo "rm -Rf /root/logs " >> startup.sh
-RUN echo "mkdir -p /root/logs " >> startup.sh
+RUN echo "rm -Rf /workspace/logs " >> startup.sh
+RUN echo "mkdir -p /workspace/logs " >> startup.sh
 
 RUN echo "touch /workspace/logs/cloud9.log " >> startup.sh
 RUN echo "touch /workspace/logs/tigerVNC.log " >> startup.sh
