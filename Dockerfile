@@ -30,36 +30,38 @@ RUN sed -i -e 's_127.0.0.1_0.0.0.0_g' /cloud9/configs/standalone.js
 RUN mkdir -p /workspace
 
 RUN echo "#!/bin/bash " > startup.sh
+RUN echo "USER_NAME=$1 " >> /root/startup.sh
+RUN echo "PASSWD=$2 " >> /root/startup.sh
+RUN echo "rm -Rf /root/logs " >> /root/startup.sh
+RUN echo "mkdir -p /root/logs " >> /root/startup.sh
 
-RUN echo "rm -Rf /workspace/logs " >> startup.sh
-RUN echo "mkdir -p /workspace/logs " >> startup.sh
+RUN echo "touch /root/logs/cloud9.log " >> /root/startup.sh
+RUN echo "touch /root/logs/tigerVNC.log " >> /root/startup.sh
+RUN echo "touch /root/logs/noVNC.log " >> /root/startup.sh
+RUN echo "touch /root/logs/wm.log " >> /root/startup.sh
 
-RUN echo "touch /workspace/logs/cloud9.log " >> startup.sh
-RUN echo "touch /workspace/logs/tigerVNC.log " >> startup.sh
-RUN echo "touch /workspace/logs/noVNC.log " >> startup.sh
-RUN echo "touch /workspace/logs/wm.log " >> startup.sh
+RUN echo "export CC=gcc " >> /root/startup.sh
+RUN echo "export CXX=g++ " >> /root/startup.sh
+RUN echo "export DISPLAY=:1 " >> /root/startup.sh
 
-RUN echo "export CC=gcc " >> startup.sh
-RUN echo "export CXX=g++ " >> startup.sh
-RUN echo "export DISPLAY=:1 " >> startup.sh
+RUN echo "mkdir -p /root/.vnc " >> /root/startup.sh
+RUN echo "echo letmein | vncpasswd -f >> /root/.vnc/passwd " >> /root/startup.sh
+RUN echo "chmod 600 /root/.vnc/passwd " >> /root/startup.sh
 
-RUN echo "mkdir -p /root/.vnc " >> startup.sh
-RUN echo "echo letmein | vncpasswd -f >> /root/.vnc/passwd " >> startup.sh
-RUN echo "chmod 600 /root/.vnc/passwd " >> startup.sh
+RUN echo "node /cloud9/server.js --listen 0.0.0.0 --port 8080 -w / --collab -a root:letmein > /root/logs/cloud9.log &" >> /root/startup.sh
 
-RUN echo "node /cloud9/server.js --listen 0.0.0.0 --port 8080 -w / --collab -a root:letmein > /workspace/logs/cloud9.log &" >> startup.sh
+RUN echo "websockify -D --web=/usr/share/novnc/ 6901 localhost:5901 >> /root/logs/noVNC.log & " >> /root/startup.sh
+RUN echo "vncserver -kill :1 || rm -rfv /tmp/.X*-lock /tmp/.X11-unix " >> /root/startup.sh
+RUN echo "vncserver :1 -depth 24 -geometry 1280x1024 >> /root/logs/tigerVNC.log &" >> /root/startup.sh
 
-RUN echo "websockify -D --web=/usr/share/novnc/ 6901 localhost:5901 >> /workspace/logs/noVNC.log & " >> startup.sh
-RUN echo "vncserver -kill :1 || rm -rfv /tmp/.X*-lock /tmp/.X11-unix " >> startup.sh
-RUN echo "vncserver :1 -depth 24 -geometry 1280x1024 >> /workspace/logs/tigerVNC.log &" >> startup.sh
-
-RUN echo "xset -dpms & " >> startup.sh
-RUN echo "xset s noblank & " >> startup.sh
-RUN echo "xset s off & " >> startup.sh
-RUN echo "/usr/bin/startxfce4 --replace " >> startup.sh
+RUN echo "xset -dpms & " >> /root/startup.sh
+RUN echo "xset s noblank & " >> /root/startup.sh
+RUN echo "xset s off & " >> /root/startup.sh
+RUN echo "/usr/bin/startxfce4 --replace " >> /root/startup.sh
 
 # expose port and directory
-VOLUME /workspace
+VOLUME /root
 EXPOSE 8080 5901 6901
 
-ENTRYPOINT ["/bin/sh", "./startup.sh"]
+ENTRYPOINT ["/bin/sh", "./root/startup.sh"]
+CMD["root", "letmein"]
