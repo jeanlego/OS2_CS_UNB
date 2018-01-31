@@ -29,7 +29,7 @@ RUN sed -i -e 's_127.0.0.1_0.0.0.0_g' /cloud9/configs/standalone.js
 #cleanup
 RUN mkdir -p /workspace
 
-ADD startup.sh
+ADD startup.sh /
 RUN chmod +x startup.sh
 
 # expose port and directory
