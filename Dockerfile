@@ -64,4 +64,4 @@ VOLUME /root
 EXPOSE 8080 5901 6901
 
 ENTRYPOINT ["/bin/sh", "./root/startup.sh"]
-CMD["root", "letmein"]
+CMD ["root", "letmein"]
