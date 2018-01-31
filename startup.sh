@@ -1,8 +1,4 @@
 #!/bin/bash
-
-USER_NAME=$1
-PASSWD=$2
-
 rm -Rf /workspace/logs
 mkdir -p /workspace/logs
 
@@ -15,10 +11,10 @@ export CXX=g++
 export DISPLAY=:1
 
 mkdir -p /root/.vnc
-echo PASSWD | vncpasswd -f >> /root/.vnc/passwd
+echo letmein | vncpasswd -f >> /root/.vnc/passwd
 chmod 600 /root/.vnc/passwd " >> /startup.sh
 
-node /cloud9/server.js --listen 0.0.0.0 --port 8080 -w /workspace --collab -a $USER_NAME:$PASSWD > /workspace/logs/cloud9.log &" >> startup.sh
+node /cloud9/server.js --listen 0.0.0.0 --port 8080 -w /workspace --collab -a root:letmein > /workspace/logs/cloud9.log &" >> startup.sh
 
 websockify -D --web=/usr/share/novnc/ 6901 localhost:5901 >> /workspace/logs/noVNC.log &
 vncserver -kill :1 || rm -rfv /tmp/.X*-lock /tmp/.X11-unix
