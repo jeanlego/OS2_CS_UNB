@@ -30,8 +30,6 @@ RUN sed -i -e 's_127.0.0.1_0.0.0.0_g' /cloud9/configs/standalone.js
 RUN mkdir -p /workspace
 
 RUN echo "#!/bin/bash " > startup.sh
-RUN echo "USER_NAME=$1 " >> /root/startup.sh
-RUN echo "PASSWD=$2 " >> /root/startup.sh
 RUN echo "rm -Rf /root/logs " >> /root/startup.sh
 RUN echo "mkdir -p /root/logs " >> /root/startup.sh
 
