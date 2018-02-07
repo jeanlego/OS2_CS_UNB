@@ -1,0 +1,45 @@
+Welcome to the starting point of your kernel!
+
+This is where you get to fulfill your wildest dreams ...
+or maybe get them crushed :(
+
+Disclaimer: The following kernel is provided to you from the
+following source:
+
+http://www.jamesmolloy.co.uk/tutorial_html/
+
+Specifically, it is the section #6 paging kernel with some
+minor modifications for our FCS lab environment.
+
+I highly encourage you to go through tutorial sections 1-6
+as they discuss the kernel and will teach you a LOT about the
+code base you are starting from. You can also look at the
+tutorials 7 - 10, however be aware that how he developed his
+kernel will be different than how we develop ours. For example,
+we will not be doing a virtual filesystem (VFS).
+
+To compile the kernel source you will need to change into the
+"src" directory and run "make".
+
+To run your kernel you will have to run the following
+custom FCS script that is on the linux machines:
+
+	fcs-qemu-run-kernel -kernel src/kernel -bootdisk floppy.img
+
+The script takes two arguments:
+	-kernel <filename>
+		This specifies the kernel that you have compiled.
+	-bootdisk <filename>
+		This specifies the initial bootdisk you need to launch your OS.
+		Think of it as your initial harddrive in the computer. This
+		file is likely to not change in the course.
+
+With the proper arguments the script will create a new ramdisk that contains
+your kernel and then launch qemu (i386 emulator) with the ramdisk. This is
+*very* similar to how you would start natively on an i386 machine. Once the
+emulator starts it will launch a new terminal window where you can see the
+output from your kernel. As always, your execution will start with the main
+method :)
+
+Good luck!!!
+
