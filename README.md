@@ -26,6 +26,28 @@ OPTION B
 3. docker run -it -d --privileged -p 8080:8080 -p 6901:6901 -p 5901:5901 -v <your_local_workspace_dir>:/workspace -v /dev:/dev jeanlego/os2_cs_unb
 
 
+BUILDING
+==
+I've updated Ken makefile so that it can do the following for you automaticaly
+
+# BUILD FUNCTION
+all
+
+# CLEANUP THE WHOLE SPACE
+clean
+
+# WRITE THE IMG FILE	
+img
+
+# TEST THE IMG
+test
+
+# DEBUG USING GDB
+debug_test
+
+# RUN THE WHOLE SUITE
+full	
+
 USING
 ==
 	
@@ -45,7 +67,7 @@ PS. you can use --restart=always if you want the image to keep on booting with y
 
 PPS. You can overwrite some or all of the default values for Cloud9 username, Cloud9 and VNC password, and Cloud9 root folder; with the following options: -e "USERNAME=<username>" -e "PASSWORD=<password>" -e "CLOUD9_ROOT_FOLDER=<path in the docker image file system you want to mount to (e.g. /workspace or /)>"
 
-RUNNING QEMU IN GDB
+RUNNING QEMU IN GDB (NOT WORKING YET)
 ================
 clone repo 
 

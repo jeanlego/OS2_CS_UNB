@@ -25,15 +25,11 @@ ASFLAGS=-felf
 all: $(SOURCES) 
 	mkdir -p bin
 	ld $(LDFLAGS) -o bin/kernel $(SOURCES)
-	
-# RUN THE WHOLE SUITE
-full: 
-	clean all img test
 
 # CLEANUP THE WHOLE SPACE
 clean:
 	rm -Rf bin
-	rm src/*.o
+	rm -f src/*.o
 	
 .s.o:
 	nasm $(ASFLAGS) $<
@@ -56,7 +52,8 @@ test:
 debug_test:
 	qemu-system-i386 -fda floppy.img
 
-	
+# RUN THE WHOLE SUITE
+full: clean all img test	
 
 
 
