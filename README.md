@@ -16,7 +16,7 @@ OPTION A
 
 3. clone this repository
 
-4. docker build -t <path/to/Dockerfile>/<docker_image_name>
+4. docker build <path/to/Dockerfile-directory> -t <docker_image_name>
 
 5. 5. docker run -it -d --privileged -p 8080:8080 -p 6901:6901 -p 5901:5901 -v <your_local_workspace_dir>:/workspace -v /dev:/dev <docker_image_name>
 
@@ -30,23 +30,13 @@ BUILDING
 ==
 I've updated Ken makefile so that it can do the following for you automaticaly
 
-# BUILD FUNCTION
-all
 
-# CLEANUP THE WHOLE SPACE
-clean
-
-# WRITE THE IMG FILE	
-img
-
-# TEST THE IMG
-test
-
-# DEBUG USING GDB
-debug_test
-
-# RUN THE WHOLE SUITE
-full	
+make all        //build the kernel from the source
+make clean      //clean the directory	
+make img        // Write the ketnel to the floppy img
+make test       //run the current floppy.img in qemu
+make debug_test //run the current floppy.img in qemu using gdb
+make full       // clean dir, build and write img, run new img
 
 USING
 ==
