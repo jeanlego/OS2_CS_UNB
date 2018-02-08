@@ -32,10 +32,15 @@ I've updated Ken makefile so that it can do the following for you automaticaly
 
 
 make all        //build the kernel from the source
+
 make clean      //clean the directory	
+
 make img        // Write the ketnel to the floppy img
+
 make test       //run the current floppy.img in qemu
+
 make debug_test //run the current floppy.img in qemu using gdb
+
 make full       // clean dir, build and write img, run new img
 
 USING
