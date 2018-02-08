@@ -26,7 +26,7 @@ OPTION B
 3. docker run -it -d --privileged -p 8080:8080 -p 6901:6901 -p 5901:5901 -v <your_local_workspace_dir>:/workspace -v /dev:/dev jeanlego/os2_cs_unb
 
 
-BUILDING
+BUILDING and RUNNING kernel
 ==
 I've updated Ken makefile so that it can do the following for you automaticaly
 
