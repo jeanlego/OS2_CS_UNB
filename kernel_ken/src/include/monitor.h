@@ -25,4 +25,8 @@ void monitor_clear();
 // Output a null-terminated ASCII string to the monitor.
 void monitor_write(char *c);
 
+void monitor_write_dec(unsigned int n);
+
+void monitor_write_hex(unsigned int n);
+
 #endif // MONITOR_H
