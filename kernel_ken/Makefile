@@ -3,57 +3,52 @@
 # The only one that needs changing is the assembler 
 # rule, as we use nasm instead of GNU as.
 
-SOURCES=\
-src/boot.o \
-src/main.o \
-src/monitor.o \
-src/common.o \
-src/descriptor_tables.o \
-src/isr.o \
-src/interrupt.o \
-src/gdt.o \
-src/timer.o \
-src/kheap.o \
-src/paging.o
-		
+DEBUG=debug
 
-CFLAGS=-m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector
-LDFLAGS=-melf_i386 -Tsrc/link.ld
-ASFLAGS=-felf
+SRC=\
+$(patsubst %.s, %.o, $(wildcard src/include/*.s)) \
+$(patsubst %.c, %.o, $(wildcard src/include/*.c)) \
+$(patsubst %.c, %.o, $(wildcard src/*.c))
+
+CFLAGS=-g -Wall -m32 -march=i386 -nostdlib -nostdinc -fno-builtin -fno-stack-protector -I src -I src/include
+ifeq ($(DEBUG),release)
+	CFLAGS+=-fomit-frame-pointer -finline-functions -fstrength-reduce
+else
+	CFLAGS+=-ggdb -DWITH_FRAME_POINTER
+endif
+
+LDFLAGS=-melf_i386 -Tsrc/include/link.ld
+ASFLAGS=-felf32
 
 # BUILD FUNCTION
-all: $(SOURCES) 
+all: $(SRC) 
 	mkdir -p bin
-	ld $(LDFLAGS) -o bin/kernel $(SOURCES)
+	ld $(LDFLAGS) -o bin/kernel.bin $(SRC) 
+	
 
 # CLEANUP THE WHOLE SPACE
 clean:
 	rm -Rf bin
 	rm -f src/*.o
+	rm -f src/include/*.o
 	
 .s.o:
 	nasm $(ASFLAGS) $<
 
-# WRITE THE IMG FILE	
-img: 
-	/sbin/losetup /dev/loop0 floppy.img
-	mkdir -p floppy_dir
-	mount /dev/loop0 floppy_dir
-	cp bin/kernel floppy_dir/kernel
-	umount /dev/loop0
-	rm -Rf floppy_dir
-	/sbin/losetup -d /dev/loop0
-
 # TEST THE IMG
 test:
-	qemu-system-i386 -fda floppy.img
+	qemu-system-i386 -kernel bin/kernel.bin 2> /dev/null
 
-# DEBUG USING GDB
+# DEBUG USING GDB #pkill qemu after!!!!
 debug_test:
-	qemu-system-i386 -fda floppy.img
+	gdb -iex 'set architecture i386' \
+	-iex 'file bin/kernel.bin' \
+	-iex 'symbol-file bin/kernel.bin' \
+	-iex 'target remote | qemu-system-i386 -gdb stdio -S -kernel bin/kernel.bin 2> /dev/null'
+
 
 # RUN THE WHOLE SUITE
-full: clean all img test	
+full: clean all test	
 
 
 

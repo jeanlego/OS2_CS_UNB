@@ -4,7 +4,17 @@
 #ifndef MONITOR_H
 #define MONITOR_H
 
-#include "common.h"
+#include "error.h"
+#include "global.h"
+
+// Write a byte out to the specified port.
+void outb(unsigned short port, unsigned char value);
+
+// Read a byte out to the specified port.
+unsigned char inb(unsigned short port);
+
+// Read a byte out to the specified port.
+unsigned short inw(unsigned short port);
 
 // Write a single character out to the screen.
 void monitor_put(char c);

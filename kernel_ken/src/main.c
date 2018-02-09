@@ -7,7 +7,7 @@
 #include "paging.h"
 #include "main.h"
 
-int main(struct multiboot *mboot_ptr)
+int main(void)
 {
     // Initialise all the ISRs and segmentation
     init_descriptor_tables();
@@ -17,8 +17,8 @@ int main(struct multiboot *mboot_ptr)
     initialise_paging();
     monitor_write("Hello, paging world!\n");
 
-    u32int *ptr = (u32int*)0xA0000000;
-    u32int do_page_fault = *ptr;
+    unsigned int *ptr = (unsigned int*)0xA0000000;
+    unsigned int do_page_fault = *ptr;
 
     return 0;
 }

@@ -6,46 +6,44 @@
 #include "kheap.h"
 
 // end is defined in the linker script.
-extern u32int end;
-u32int placement_address = (u32int)&end;
+extern unsigned int end;
+unsigned int placement_address = (unsigned int)&end;
 
-u32int kmalloc_int(u32int sz, int align, u32int *phys)
+unsigned int kmalloc_int(unsigned int sz, int align, unsigned int *phys)
 {
     // This will eventually call malloc() on the kernel heap.
     // For now, though, we just assign memory at placement_address
     // and increment it by sz. Even when we've coded our kernel
     // heap, this will be useful for use before the heap is initialised.
-    if (align == 1 && (placement_address & 0xFFFFF000) )
-    {
-        // Align the placement address;
-        placement_address &= 0xFFFFF000;
-        placement_address += 0x1000;
-    }
+    int mask = placement_address / FRAME_SIZE;
+    // Align the placement address;
+    if (align && mask)
+        placement_address = (mask+align)*FRAME_SIZE;
+    
     if (phys)
-    {
         *phys = placement_address;
-    }
-    u32int tmp = placement_address;
+    
+    unsigned int tmp = placement_address;
     placement_address += sz;
     return tmp;
 }
 
-u32int kmalloc_a(u32int sz)
+unsigned int kmalloc_a(unsigned int sz)
 {
     return kmalloc_int(sz, 1, 0);
 }
 
-u32int kmalloc_p(u32int sz, u32int *phys)
+unsigned int kmalloc_p(unsigned int sz, unsigned int *phys)
 {
     return kmalloc_int(sz, 0, phys);
 }
 
-u32int kmalloc_ap(u32int sz, u32int *phys)
+unsigned int kmalloc_ap(unsigned int sz, unsigned int *phys)
 {
     return kmalloc_int(sz, 1, phys);
 }
 
-u32int kmalloc(u32int sz)
+unsigned int kmalloc(unsigned int sz)
 {
     return kmalloc_int(sz, 0, 0);
 }

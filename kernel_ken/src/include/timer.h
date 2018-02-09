@@ -4,8 +4,9 @@
 #ifndef TIMER_H
 #define TIMER_H
 
-#include "common.h"
+#include "global.h"
+#include "error.h"
 
-void init_timer(u32int frequency);
+void init_timer(unsigned int frequency);
 
 #endif
