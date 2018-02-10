@@ -17,8 +17,9 @@ void __init()
 
     initialise_paging();
     
-    print("Hello, paging world!\n");
+    monitor_write("Hello, paging world!\n");
 
     unsigned int *ptr = (unsigned int*)0xA0000000;
     unsigned int do_page_fault = *ptr;
+    do_page_fault++;
 }

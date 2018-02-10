@@ -45,7 +45,7 @@ void print_dec(unsigned int n)
 */
 void *alloc(unsigned int size, unsigned char page_align)
 {
-    
+    return NULL;
 }
 
     // Allocates a contiguous region of memory 'size' in the user heap. If
@@ -54,7 +54,7 @@ void *alloc(unsigned int size, unsigned char page_align)
 
 void free(void *p)
 {
-    
+    return;
 }
 
     // Releases a block from the user heap allocated with 'alloc'.
@@ -90,7 +90,7 @@ void free(void *p)
 */
 void initialise_tasking()
 {
-    
+    return;
 }
 
     // Initialises the tasking system. Any data structures or initialization of
@@ -100,7 +100,7 @@ void initialise_tasking()
 
 int fork()
 {
-    
+    return NULL;
 }
 
     // Forks the current process, spawning a new one with a different
@@ -110,7 +110,7 @@ int fork()
 
 void exit()
 {
-    
+    return;
 }
 
     // Terminates the current process, cleaning up the resources allocated
@@ -119,7 +119,7 @@ void exit()
 
 void yield()
 {
-    
+    return;
 }
 
     // Causes the process to surrender the CPU. The result is that the process
@@ -129,7 +129,7 @@ void yield()
 
 int sleep(unsigned int secs)
 {
-    
+    return NULL;
 }
 
     // Causes the process to surrender the CPU and go to sleep for n seconds.
@@ -140,14 +140,14 @@ int sleep(unsigned int secs)
 
 int getpid()
 {
-    
+    return NULL;
 }
 
     // Returns the pid of the current process.
 
 int setpriority(int pid, int new_priority)
 {
-    
+    return NULL;
 }
 
     // Set the priority of the process. pid is the process id returned by
@@ -170,7 +170,7 @@ int setpriority(int pid, int new_priority)
 */
 int open_sem(int n)
 {
-    
+    return NULL;
 }
 
     // n is the number of processes that can be granted access to the critical
@@ -180,7 +180,7 @@ int open_sem(int n)
 
 int wait(int s)
 {
-    
+    return NULL;
 }
 
     // The invoking process is requesting to acquire the semaphore, s. If the
@@ -192,7 +192,7 @@ int wait(int s)
 
 int signal(int s)
 {
-    
+    return NULL;
 }
 
     // The invoking process will release the semaphore, if and only if the process
@@ -205,7 +205,7 @@ int signal(int s)
 
 int close_sem(int s)
 {
-    
+    return NULL;
 }
 
     // Close the semaphore s and release any associated resources. If s is invalid then
@@ -229,7 +229,7 @@ int close_sem(int s)
 #define INVALID_PIPE -1
 
 int open_pipe(){
-    
+    return NULL;
 }
 
     // Initialize a new pipe and returns a descriptor. It returns INVALID_PIPE
@@ -238,7 +238,7 @@ int open_pipe(){
 
 unsigned int write(int fildes, const void *buf, unsigned int nbyte)
 {
-    
+    return NULL;
 }
 
     // Write the first nbyte of bytes from buf into the pipe fildes. The return value is the
@@ -248,7 +248,7 @@ unsigned int write(int fildes, const void *buf, unsigned int nbyte)
 
 unsigned int read(int fildes, void *buf, unsigned int nbyte)
 {
-    
+    return NULL;
 }
 
     // Read the first nbyte of bytes from the pipe fildes and store them in buf. The
@@ -258,7 +258,7 @@ unsigned int read(int fildes, void *buf, unsigned int nbyte)
     
 int close_pipe(int fildes)
 {
-    
+    return NULL;
 }
 
     // Close the pipe specified by fildes. It returns INVALID_PIPE if the fildes

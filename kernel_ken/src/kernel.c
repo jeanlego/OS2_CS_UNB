@@ -3,7 +3,7 @@
 //   for the new heap. 
 heap_t *create_heap(unsigned int start, unsigned int end, unsigned int max, unsigned char supervisor, unsigned char readonly)
 {
-    
+    return NULL;
 }
 
 // General deallocation function for memory in the kernel's heap. p is

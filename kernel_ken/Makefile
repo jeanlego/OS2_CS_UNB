@@ -3,16 +3,17 @@
 # The only one that needs changing is the assembler 
 # rule, as we use nasm instead of GNU as.
 
-DEBUG=debug
+INITIAL_BREAK=__init
+DEBUG=release
 
 SRC=\
 $(patsubst %.s, %.o, $(wildcard src/include/*.s)) \
 $(patsubst %.c, %.o, $(wildcard src/include/*.c)) \
 $(patsubst %.c, %.o, $(wildcard src/*.c))
 
-CFLAGS=-g -Wall -m32 -march=i386 -nostdlib -nostdinc -fno-builtin -fno-stack-protector -I src -I src/include
+CFLAGS=-Wall -g -m32 -march=i386 -nostdlib -nostdinc -fno-builtin -fno-stack-protector -I src -I src/include
 ifeq ($(DEBUG),release)
-	CFLAGS+=-fomit-frame-pointer -finline-functions -fstrength-reduce
+	CFLAGS+=-fomit-frame-pointer
 else
 	CFLAGS+=-ggdb -DWITH_FRAME_POINTER
 endif
@@ -39,12 +40,14 @@ clean:
 test:
 	qemu-system-i386 -kernel bin/kernel.bin 2> /dev/null
 
-# DEBUG USING GDB #pkill qemu after!!!!
+# DEBUG USING GDB use kill in gdb to stop qemu after!!!!
+# change the initial breakpoint to your need
 debug_test:
-	gdb -iex 'set architecture i386' \
+	gdb -q -iex 'set architecture i386' \
 	-iex 'file bin/kernel.bin' \
 	-iex 'symbol-file bin/kernel.bin' \
-	-iex 'target remote | qemu-system-i386 -gdb stdio -S -kernel bin/kernel.bin 2> /dev/null'
+	-iex 'target remote | qemu-system-i386 -gdb stdio -S -kernel bin/kernel.bin 2> /dev/null' \
+	-iex 'break __init'
 
 
 # RUN THE WHOLE SUITE

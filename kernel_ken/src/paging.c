@@ -57,6 +57,7 @@ static unsigned int first_frame()
         else
             return FRAME_ID(frame_addr);
     }
+    return END_ADDR;
 }
 
 // Function to allocate a frame.
@@ -79,6 +80,12 @@ void alloc_frame(page_t *page, int is_kernel, int is_writeable)
 // Function to deallocate a frame.
 void free_frame(page_t *page)
 {
+    ASSERT(page 
+        && "no page to deallocate frame from!");
+        
+    WARN_ASSERT(!(page->frame),
+        "no frame in the page!");
+        
     unsigned int frame;
     if (!(frame=page->frame))
         return;
@@ -122,6 +129,9 @@ void initialise_paging()
 
 void switch_page_directory(page_directory_t *dir)
 {
+    ASSERT(dir 
+        && "no page dir to switch from!");
+        
     current_directory = dir;
     asm volatile("mov %0, %%cr3":: "r"(&dir->tablesPhysical));
     unsigned int cr0;
@@ -132,25 +142,27 @@ void switch_page_directory(page_directory_t *dir)
 
 page_t *get_page(unsigned int address, int make, page_directory_t *dir)
 {
+    ASSERT(dir 
+        && "no page dir to get page from!");
+        
+    WARN_ASSERT(address < END_ADDR,
+        "you are making a request for a page that is out of bounds");
+        
     // Turn the address into an index.
     int idx = FRAME_ID(address);
     // Find the page table containing this address.
     unsigned int table_idx = idx / N_PAGE;
     if (dir->tables[table_idx]) // If this table is already assigned
-    {
         return &dir->tables[table_idx]->pages[idx%N_PAGE];
-    }
-    else if(make)
-    {
-        unsigned int tmp;
-        dir->tables[table_idx] = (page_table_t*)kmalloc_ap(sizeof(page_table_t), &tmp);
-        dir->tablesPhysical[table_idx] = tmp | 0x7; // PRESENT, RW, US.
-        return &dir->tables[table_idx]->pages[idx%N_PAGE];
-    }
-    else
-    {
-        return 0;
-    }
+    
+    else if(!make)
+        return NULL;
+    
+    unsigned int tmp;
+    dir->tables[table_idx] = (page_table_t*)kmalloc_ap(sizeof(page_table_t), &tmp);
+    dir->tablesPhysical[table_idx] = tmp | 0x7; // PRESENT, RW, US.
+    return &dir->tables[table_idx]->pages[idx%N_PAGE];
+
 }
 
 
@@ -174,6 +186,7 @@ void page_fault(registers_t regs)
     if (rw) {monitor_write("read-only ");}
     if (us) {monitor_write("user-mode ");}
     if (reserved) {monitor_write("reserved ");}
+    if (id) {monitor_write("instruction fetch ");}
     monitor_write(") at ");
     monitor_write_hex(faulting_address);
     monitor_write("\n");

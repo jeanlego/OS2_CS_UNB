@@ -16,4 +16,9 @@
 
 #define END_ADDR ~(0x0)
 
+#define NULL 0
+
+//uncomment to debug
+#define DEBUG
+
 #endif // GLOBAL_H

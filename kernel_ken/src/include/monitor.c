@@ -134,7 +134,7 @@ void monitor_clear()
 }
 
 // Outputs a null-terminated ASCII string to the monitor.
-void monitor_write(char *c)
+void monitor_write(const char *c)
 {
     int i = 0;
     while (c[i])
