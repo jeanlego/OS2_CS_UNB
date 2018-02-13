@@ -1,13 +1,5 @@
 INSTALLING
 ==
-
-1. Enable nested virtualization if docker is running as a VM else skip to 2.
-	
-	follow this guide for windows
-	https://www.timothygruber.com/hyper-v-2/run-a-nested-vm-on-kvm-qemu-vm-in-hyper-v/
-	
-	follow this guide for linux
-	https://lalatendu.org/2015/11/01/kvm-nested-virtualization-in-fedora-23/
 	
 2. install docker and all the shabang
 
@@ -31,17 +23,13 @@ BUILDING and RUNNING kernel
 I've updated Ken makefile so that it can do the following for you automaticaly
 
 
-make all        //build the kernel from the source
+make all        //build the kernel from the source and run in qemu
 
 make clean      //clean the directory	
 
-make img        // Write the ketnel to the floppy img
+make test       //build the kernel and run in qemu
 
-make test       //run the current floppy.img in qemu
-
-make debug_test //run the current floppy.img in qemu using gdb
-
-make full       // clean dir, build and write img, run new img
+make debug 	//build the kernel and run in qemu using gdb, stops at BRK macro (in common.h)
 
 USING
 ==
@@ -50,9 +38,9 @@ I've provided you with the base image Ken provided us with.
 
 you can connect to your web IDE via http://localhost:8080
 
-you can connect to your X11 xfce desktop via http://localhost:6901
+you can connect to your web desktop via http://localhost:6901
 
-you can connect to your X11 xfce desktop via vnc client through port 5901
+you can connect to your x11 desktop via vnc client through port 5901
 
 user: root
 
@@ -61,11 +49,3 @@ pass: letmein
 PS. you can use --restart=always if you want the image to keep on booting with your machine
 
 PPS. You can overwrite some or all of the default values for Cloud9 username, Cloud9 and VNC password, and Cloud9 root folder; with the following options: -e "USERNAME=<username>" -e "PASSWORD=<password>" -e "CLOUD9_ROOT_FOLDER=<path in the docker image file system you want to mount to (e.g. /workspace or /)>"
-
-RUNNING QEMU IN GDB (NOT WORKING YET)
-================
-clone repo 
-
-copy script to where floppy.img is
-
-run using gdb -x </your/path/to/img>/run_in_gdb.sh
