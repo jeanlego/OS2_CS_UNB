@@ -4,12 +4,15 @@
 //          Rewritten for JamesM's kernel development tutorials.
 //
 
+#include "common.h"
+#include <stddef.h>
+#include <stdint.h>
 #include "isr.h"
 #include "monitor.h"
 
 isr_t interrupt_handlers[256];
 
-void register_interrupt_handler(unsigned char n, isr_t handler)
+void register_interrupt_handler(uint8_t n, isr_t handler)
 {
     interrupt_handlers[n] = handler;
 }

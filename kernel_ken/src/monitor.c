@@ -3,18 +3,21 @@
 //             but rewritten for JamesM's kernel tutorials.
 
 #include "monitor.h"
+#include "common.h"
+#include <stddef.h>
+#include <stdint.h>
 
 // The VGA framebuffer starts at 0xB8000.
-unsigned short *video_memory = (unsigned short *)0xB8000;
+uint16_t *video_memory = (uint16_t *)0xB8000;
 // Stores the cursor position.
-unsigned char cursor_x = 0;
-unsigned char cursor_y = 0;
+uint8_t cursor_x = 0;
+uint8_t cursor_y = 0;
 
 // Updates the hardware cursor.
 static void move_cursor()
 {
     // The screen is 80 characters wide...
-    unsigned short cursorLocation = cursor_y * 80 + cursor_x;
+    uint16_t cursorLocation = cursor_y * 80 + cursor_x;
     outb(0x3D4, 14);                  // Tell the VGA board we are setting the high cursor byte.
     outb(0x3D5, cursorLocation >> 8); // Send the high cursor byte.
     outb(0x3D4, 15);                  // Tell the VGA board we are setting the low cursor byte.
@@ -26,8 +29,8 @@ static void scroll()
 {
 
     // Get a space character with the default colour attributes.
-    unsigned char attributeByte = (0 /*black*/ << 4) | (15 /*white*/ & 0x0F);
-    unsigned short blank = 0x20 /* space */ | (attributeByte << 8);
+    uint8_t attributeByte = (0 /*black*/ << 4) | (15 /*white*/ & 0x0F);
+    uint16_t blank = 0x20 /* space */ | (attributeByte << 8);
 
     // Row 25 is the end, this means we need to scroll up
     if(cursor_y >= 25)
@@ -55,16 +58,16 @@ static void scroll()
 void monitor_put(char c)
 {
     // The background colour is black (0), the foreground is white (15).
-    unsigned char backColour = 0;
-    unsigned char foreColour = 15;
+    uint8_t backColour = 0;
+    uint8_t foreColour = 15;
 
     // The attribute byte is made up of two nibbles - the lower being the 
     // foreground colour, and the upper the background colour.
-    unsigned char  attributeByte = (backColour << 4) | (foreColour & 0x0F);
+    uint8_t  attributeByte = (backColour << 4) | (foreColour & 0x0F);
     // The attribute byte is the top 8 bits of the word we have to send to the
     // VGA board.
-    unsigned short attribute = attributeByte << 8;
-    unsigned short *location;
+    uint16_t attribute = attributeByte << 8;
+    uint16_t *location;
 
     // Handle a backspace, by moving the cursor back one space
     if (c == 0x08 && cursor_x)
@@ -118,8 +121,8 @@ void monitor_put(char c)
 void monitor_clear()
 {
     // Make an attribute byte for the default colours
-    unsigned char attributeByte = (0 /*black*/ << 4) | (15 /*white*/ & 0x0F);
-    unsigned short blank = 0x20 /* space */ | (attributeByte << 8);
+    uint8_t attributeByte = (0 /*black*/ << 4) | (15 /*white*/ & 0x0F);
+    uint16_t blank = 0x20 /* space */ | (attributeByte << 8);
 
     int i;
     for (i = 0; i < 80*25; i++)
@@ -134,7 +137,7 @@ void monitor_clear()
 }
 
 // Outputs a null-terminated ASCII string to the monitor.
-void monitor_write(const char *c)
+void monitor_write(char *c)
 {
     int i = 0;
     while (c[i])
@@ -143,9 +146,9 @@ void monitor_write(const char *c)
     }
 }
 
-void monitor_write_hex(unsigned int n)
+void monitor_write_hex(uint32_t n)
 {
-    int tmp;
+    int32_t tmp;
 
     monitor_write("0x");
 
@@ -184,7 +187,7 @@ void monitor_write_hex(unsigned int n)
 
 }
 
-void monitor_write_dec(unsigned int n)
+void monitor_write_dec(uint32_t n)
 {
 
     if (n == 0)
@@ -193,7 +196,7 @@ void monitor_write_dec(unsigned int n)
         return;
     }
 
-    int acc = n;
+    int32_t acc = n;
     char c[32];
     int i = 0;
     while (acc > 0)
@@ -213,25 +216,4 @@ void monitor_write_dec(unsigned int n)
     }
     monitor_write(c2);
 
-}
-
-
-// Write a byte out to the specified port.
-void outb(unsigned short port, unsigned char value)
-{
-    asm volatile ("outb %1, %0" : : "dN" (port), "a" (value));
-}
-// Read a byte out to the specified port.
-unsigned char inb(unsigned short port)
-{
-    unsigned char ret;
-    asm volatile("inb %1, %0" : "=a" (ret) : "dN" (port));
-    return ret;
-}
-// Read a byte out to the specified port.
-unsigned short inw(unsigned short port)
-{
-    unsigned short ret;
-    asm volatile ("inw %1, %0" : "=a" (ret) : "dN" (port));
-    return ret;
 }

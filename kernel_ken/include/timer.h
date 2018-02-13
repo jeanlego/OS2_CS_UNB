@@ -4,9 +4,11 @@
 #ifndef TIMER_H
 #define TIMER_H
 
-#include "global.h"
-#include "error.h"
+#include "common.h"
 
-void init_timer(unsigned int frequency);
+#include <stddef.h>
+#include <stdint.h>
+
+void init_timer(uint32_t frequency);
 
 #endif
