@@ -1,29 +1,42 @@
 CC=gcc
-C_SRC=
-CFLAGS=-Wall -Wextra -g -m32 -nostdlib -fno-builtin -fno-stack-protector -Iinclude -ggdb -DWITH_FRAME_POINTER -ffreestanding -Tasm/link.ld
+AS=nasm
+C_SRC=$(wildcard src/*.c)
+ASM_SRC=$(wildcard asm/*.s)
+OBJ_SRC=$(patsubst %.s, %.o, $(ASM_SRC))
+LINK_DEF=link.ld
+KERNEL_OUT=bin/kernel.bin
+ARCH=x86_64
+ASMFLAGS=-felf32
+
+CFLAGS=-Wall -Wextra \
+-g -ggdb \
+-m32 -nostdlib -fno-builtin -fno-stack-protector -ffreestanding \
+-Iinclude -DWITH_FRAME_POINTER  -T$(LINK_DEF)
 
 .phony: all
 
 # BUILD FUNCTION
-build: 
+build: $(OBJ_SRC)
 	mkdir -p bin
-	nasm -felf32 asm/start.s -o asm/start.o
-	$(CC) $(CFLAGS) asm/start.o $(wildcard src/*.c) -o bin/kernel.bin
-	rm -f asm/start.o
+	$(CC) $(CFLAGS) $(OBJ_SRC) $(C_SRC) -o $(KERNEL_OUT)
+	rm -f asm/*.o
 
 # CLEANUP THE WHOLE SPACE
 clean:
 	rm -Rf bin
+	
+.s.o:
+	$(AS) $(ASMFLAGS) $<
 
 # TEST THE IMG
 all: clean build
-	qemu-system-x86_64 -kernel bin/kernel.bin 2> /dev/null
+	qemu-system-$(ARCH) -kernel $(KERNEL_OUT) 2> /dev/null
 
 # DEBUG USING GDB use kill in gdb to stop qemu after!!!!
 # change the initial breakpoint to your need
 debug: clean build
-	gdb -q -iex 'set architecture x86_64' \
-	-iex 'file bin/kernel.bin' \
-	-iex 'symbol-file bin/kernel.bin' \
-	-iex 'target remote | qemu-system-x86_64 -gdb stdio -S -kernel bin/kernel.bin 2> /dev/null' \
+	gdb -q -iex 'set architecture $(ARCH)' \
+	-iex 'file $(KERNEL_OUT)' \
+	-iex 'symbol-file $(KERNEL_OUT)' \
+	-iex 'target remote | qemu-system-$(ARCH) -gdb stdio -S -kernel $(KERNEL_OUT) 2> /dev/null' \
 	-iex 'break break_point'

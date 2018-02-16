@@ -6,9 +6,6 @@
 
 #include "common.h"
 
-#include <stddef.h>
-#include <stdint.h>
-
-void init_timer(uint32_t frequency);
+void init_timer(u32int frequency);
 
 #endif

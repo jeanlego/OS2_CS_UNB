@@ -3,7 +3,7 @@
  */
 OUTPUT_FORMAT(elf32-i386)
 ENTRY(start)
-phys = 0x00100000;
+phys = 0x100000;
 SECTIONS
 {
 	/*
@@ -13,7 +13,7 @@ SECTIONS
 		code = .;
 		*(.text)
 		*(.rodata)
-		. = ALIGN(4096);
+		. = ALIGN(4K);
 	}
 	/*
 	 * Kernel data
@@ -22,7 +22,7 @@ SECTIONS
 	{
 		data = .;
 		*(.data)
-		. = ALIGN(4096);
+		. = ALIGN(4K);
 	}
 	/*
 	 * Statically defined, uninitialized values
@@ -31,7 +31,7 @@ SECTIONS
 	{
 		bss = .;
 		*(.bss)
-		. = ALIGN(4096);
+		. = ALIGN(4K);
 	}
 	/*
 	 * End of kernel.
