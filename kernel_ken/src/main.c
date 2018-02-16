@@ -9,10 +9,10 @@
 #include "task.h"
 #include "syscall.h"
 
-extern u32int placement_address;
-u32int initial_esp;
+extern uint32_t placement_address;
+uint32_t initial_esp;
 
-int main(struct multiboot *mboot_ptr, u32int initial_stack)
+int main(struct multiboot *mboot_ptr, uint32_t initial_stack)
 {
     initial_esp = initial_stack;
     // Initialise all the ISRs and segmentation

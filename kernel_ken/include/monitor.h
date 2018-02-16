@@ -16,9 +16,9 @@ void monitor_clear();
 void monitor_write(char *c);
 
 // Output a hex value to the monitor.
-void monitor_write_hex(u32int n);
+void monitor_write_hex(uint32_t n);
 
 // Output a decimal value to the monitor.
-void monitor_write_dec(u32int n);
+void monitor_write_dec(uint32_t n);
 
 #endif // MONITOR_H
