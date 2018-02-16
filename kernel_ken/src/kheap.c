@@ -73,7 +73,7 @@ static void expand(uint32_t new_size, heap_t *heap)
     ASSERT(new_size > heap->end_address - heap->start_address);
 
     // Get the nearest following page boundary.
-    if (new_size&0xFFFFF000 != 0)
+    if ((new_size&0xFFFFF000) != 0)
     {
         new_size &= 0xFFFFF000;
         new_size += 0x1000;
@@ -136,7 +136,7 @@ static int32_t find_smallest_hole(uint32_t size, uint8_t page_align, heap_t *hea
             // Page-align the starting point of this header.
             uint32_t location = (uint32_t)header;
             int32_t offset = 0;
-            if ((location+sizeof(header_t)) & 0xFFFFF000 != 0)
+            if (((location+sizeof(header_t)) & 0xFFFFF000) != 0)
                 offset = 0x1000 /* page size */  - (location+sizeof(header_t))%0x1000;
             int32_t hole_size = (int32_t)header->size - offset;
             // Can we fit now?
@@ -149,7 +149,7 @@ static int32_t find_smallest_hole(uint32_t size, uint8_t page_align, heap_t *hea
     }
     // Why did the loop exit?
     if (iterator == heap->index.size)
-        return -1; // We got to the end and didn't find anything.
+        return BAD; // We got to the end and didn't find anything.
     else
         return iterator;
 }
@@ -174,7 +174,7 @@ heap_t *create_heap(uint32_t start, uint32_t end_addr, uint32_t max, uint8_t sup
     start += sizeof(type_t)*HEAP_INDEX_SIZE;
 
     // Make sure the start address is page-aligned.
-    if (start & 0xFFFFF000 != 0)
+    if ((start & 0xFFFFF000) != 0)
     {
         start &= 0xFFFFF000;
         start += 0x1000;
@@ -202,9 +202,9 @@ void *alloc(uint32_t size, uint8_t page_align, heap_t *heap)
     // Make sure we take the size of header/footer into account.
     uint32_t new_size = size + sizeof(header_t) + sizeof(footer_t);
     // Find the smallest hole that will fit.
-    int32_t iterator = find_smallest_hole(new_size, page_align, heap);
+    uint32_t iterator = find_smallest_hole(new_size, page_align, heap);
 
-    if (iterator == -1) // If we didn't find a suitable hole
+    if (iterator == BAD) // If we didn't find a suitable hole
     {
         // Save some previous data.
         uint32_t old_length = heap->end_address - heap->start_address;
@@ -230,7 +230,7 @@ void *alloc(uint32_t size, uint8_t page_align, heap_t *heap)
         }
 
         // If we didn't find ANY headers, we need to add one.
-        if (idx == -1)
+        if (idx == BAD)
         {
             header_t *header = (header_t *)old_end_address;
             header->magic = HEAP_MAGIC;

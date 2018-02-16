@@ -43,6 +43,13 @@ typedef struct page_directory
     uint32_t physicalAddr;
 } page_directory_t;
 
+// Function to allocate a frame.
+void alloc_frame(page_t *page, int is_kernel, int is_writeable);
+
+// Function to deallocate a frame.
+void free_frame(page_t *page);
+
+
 /**
    Sets up the environment, page directories etc and
    enables paging.

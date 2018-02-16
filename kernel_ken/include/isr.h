@@ -4,6 +4,9 @@
 //          Rewritten for JamesM's kernel development tutorials.
 //
 
+#ifndef ISR_H
+#define ISR_H
+
 #include "common.h"
 
 // A few defines to make life a little easier
@@ -37,3 +40,5 @@ typedef struct registers
 // first parameter.
 typedef void (*isr_t)(registers_t*);
 void register_interrupt_handler(uint8_t n, isr_t handler);
+
+#endif //ISR_H

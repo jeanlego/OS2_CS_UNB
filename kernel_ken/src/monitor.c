@@ -3,6 +3,9 @@
 //             but rewritten for JamesM's kernel tutorials.
 
 #include "monitor.h"
+#include "common.h"
+#include <stddef.h>
+#include <stdint.h>
 
 // The VGA framebuffer starts at 0xB8000.
 uint16_t *video_memory = (uint16_t *)0xB8000;

@@ -5,6 +5,8 @@
 
 #include "task.h"
 #include "paging.h"
+#include "descriptor_tables.h"
+#include "kheap.h"
 
 // The currently running task.
 volatile task_t *current_task;
@@ -95,7 +97,7 @@ void move_stack(void *new_stack_start, uint32_t size)
   asm volatile("mov %0, %%ebp" : : "r" (new_base_pointer));
 }
 
-void switch_task()
+void task_switch()
 {
     // If we haven't initialised tasking yet, just return.
     if (!current_task)
