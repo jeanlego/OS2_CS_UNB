@@ -35,8 +35,6 @@ mboot:
 [GLOBAL start]                  ; Kernel entry point.
 [EXTERN kernel_main]                   ; This is the entry point of our C code
 
-_start
-
 start:
 	; Set up stack pointer.
 	mov esp, 0x7FFFF

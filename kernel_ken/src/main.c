@@ -29,6 +29,7 @@ int kernel_main(struct multiboot *mboot_ptr, uint32_t initial_stack)
 
     // Start multitasking.
     initialise_tasking();
+    
 
     initialise_syscalls();
 
