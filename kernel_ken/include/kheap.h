@@ -7,9 +7,6 @@
 #define KHEAP_H
 
 #include "common.h"
-
-#include <stddef.h>
-#include <stdint.h>
 #include "ordered_array.h"
 
 #define KHEAP_START         0xC0000000

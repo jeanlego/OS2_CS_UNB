@@ -7,9 +7,6 @@
 
 #include "common.h"
 
-#include <stddef.h>
-#include <stdint.h>
-
 /**
    This array is insertion sorted - it always remains in a sorted state (between calls).
    It can store anything that can be cast to a void* -- so a uint32_t, or any pointer.

@@ -3,9 +3,6 @@
 //                    Written for JamesM's kernel development tutorials.
 
 #include "ordered_array.h"
-#include "common.h"
-#include <stddef.h>
-#include <stdint.h>
 #include "kheap.h"
 
 int8_t standard_lessthan_predicate(type_t a, type_t b)

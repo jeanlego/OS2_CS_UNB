@@ -5,10 +5,6 @@
 
 #include "kheap.h"
 #include "paging.h"
-#include "common.h"
-#include <stddef.h>
-#include <stdint.h>
-#include "monitor.h"
 
 // end is defined in the linker script.
 extern uint32_t end;
@@ -127,7 +123,7 @@ static uint32_t contract(uint32_t new_size, heap_t *heap)
     return new_size;
 }
 
-static uint32_t find_smallest_hole(uint32_t size, uint8_t page_align, heap_t *heap)
+static int32_t find_smallest_hole(uint32_t size, uint8_t page_align, heap_t *heap)
 {
     // Find the smallest hole that will fit.
     uint32_t iterator = 0;
@@ -151,7 +147,11 @@ static uint32_t find_smallest_hole(uint32_t size, uint8_t page_align, heap_t *he
             break;
         iterator++;
     }
-    return iterator;
+    // Why did the loop exit?
+    if (iterator == heap->index.size)
+        return BAD; // We got to the end and didn't find anything.
+    else
+        return iterator;
 }
 
 static int8_t header_t_less_than(void*a, void *b)
@@ -204,7 +204,7 @@ void *alloc(uint32_t size, uint8_t page_align, heap_t *heap)
     // Find the smallest hole that will fit.
     uint32_t iterator = find_smallest_hole(new_size, page_align, heap);
 
-    if (iterator == heap->index.size) // If we didn't find a suitable hole
+    if (iterator == BAD) // If we didn't find a suitable hole
     {
         // Save some previous data.
         uint32_t old_length = heap->end_address - heap->start_address;
@@ -230,7 +230,7 @@ void *alloc(uint32_t size, uint8_t page_align, heap_t *heap)
         }
 
         // If we didn't find ANY headers, we need to add one.
-        if (idx == ((uint32_t)-1))
+        if (idx == BAD)
         {
             header_t *header = (header_t *)old_end_address;
             header->magic = HEAP_MAGIC;

@@ -6,9 +6,6 @@
 
 #include "common.h"
 
-#include <stddef.h>
-#include <stdint.h>
-
 #define MULTIBOOT_FLAG_MEM     0x001
 #define MULTIBOOT_FLAG_DEVICE  0x002
 #define MULTIBOOT_FLAG_CMDLINE 0x004

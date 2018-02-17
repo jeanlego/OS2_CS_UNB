@@ -9,9 +9,6 @@
 
 #include "common.h"
 
-#include <stddef.h>
-#include <stdint.h>
-
 // A few defines to make life a little easier
 #define IRQ0 32
 #define IRQ1 33
@@ -41,7 +38,7 @@ typedef struct registers
 // Enables registration of callbacks for interrupts or IRQs.
 // For IRQs, to ease confusion, use the #defines above as the
 // first parameter.
-typedef void (*isr_t)(registers_t);
+typedef void (*isr_t)(registers_t*);
 void register_interrupt_handler(uint8_t n, isr_t handler);
 
-#endif
+#endif //ISR_H

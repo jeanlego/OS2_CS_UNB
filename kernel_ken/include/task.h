@@ -7,12 +7,9 @@
 #define TASK_H
 
 #include "common.h"
-
-#include <stddef.h>
-#include <stdint.h>
 #include "paging.h"
 
-#define KERNEL_STACK_SIZE 2048
+#define KERNEL_STACK_SIZE 2048       // Use a 2kb kernel stack.
 
 // This structure defines a 'task' - a process.
 typedef struct task
@@ -21,6 +18,7 @@ typedef struct task
     uint32_t esp, ebp;       // Stack and base pointers.
     uint32_t eip;            // Instruction pointer.
     page_directory_t *page_directory; // Page directory.
+    uint32_t kernel_stack;   // Kernel stack location.
     struct task *next;     // The next task in a linked list.
 } task_t;
 
@@ -28,7 +26,9 @@ typedef struct task
 void initialise_tasking();
 
 // Called by the timer hook, this changes the running process.
-void switch_task();
+void task_switch();
+
+void switch_to_user_mode();
 
 // Forks the current process, spawning a new one with a different
 // memory space.

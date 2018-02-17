@@ -5,9 +5,6 @@
 #define PAGING_H
 
 #include "common.h"
-
-#include <stddef.h>
-#include <stdint.h>
 #include "isr.h"
 
 typedef struct page
@@ -46,11 +43,18 @@ typedef struct page_directory
     uint32_t physicalAddr;
 } page_directory_t;
 
+// Function to allocate a frame.
+void alloc_frame(page_t *page, int is_kernel, int is_writeable);
+
+// Function to deallocate a frame.
+void free_frame(page_t *page);
+
+
 /**
    Sets up the environment, page directories etc and
    enables paging.
 **/
-void initialise_paging(size_t memsz);
+void initialise_paging();
 
 /**
    Causes the specified page directory to be loaded into the
@@ -68,16 +72,11 @@ page_t *get_page(uint32_t address, int make, page_directory_t *dir);
 /**
    Handler for page faults.
 **/
-void page_fault(registers_t regs);
+void page_fault(registers_t *regs);
 
 /**
    Makes a copy of a page directory.
 **/
 page_directory_t *clone_directory(page_directory_t *src);
-
-void alloc_frame(page_t *page, int is_kernel, int is_writeable);
-// Function to deallocate a frame.
-void free_frame(page_t *page);
-
 
 #endif
