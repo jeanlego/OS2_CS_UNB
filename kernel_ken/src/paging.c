@@ -59,20 +59,19 @@ void free_frame(page_t *page)
     page->frame = 0x0;
 }
 
-void initialise_paging()
+void initialise_paging(size_t memsz)
 {
-    // The size of physical memory. For the moment we 
-    // assume it is 16MB big.
-    uint32_t mem_end_page = 0x1000000;
-    nframes = mem_end_page / PAGE_SZ;
 
-    frames = (uint32_t*)kmalloc_a(nframes/ARCH);
-    memset(frames, 0, sizeof(uint32_t)*(nframes/ARCH));
+    nframes = memsz;
+    uint32_t phys;
+    
+    frames = (uint32_t*)kmalloc_ap(nframes/ARCH,&phys);
+    memset(frames, 0, sizeof(uint32_t)*nframes/ARCH);
     
     // Let's make a page directory.
-    kernel_directory = (page_directory_t*)kmalloc_a(sizeof(page_directory_t));
+    kernel_directory = (page_directory_t*)kmalloc_ap(sizeof(page_directory_t),&phys);
     memset(kernel_directory, 0, sizeof(page_directory_t));
-    
+
     
     kernel_directory->physicalAddr = (uint32_t)kernel_directory->tablesPhysical;
     // Map some pages in the kernel heap area.

@@ -19,13 +19,12 @@ int kernel_main(struct multiboot *mboot_ptr, uint32_t initial_stack)
     init_descriptor_tables();
     // Initialise the screen (by clearing it)
     monitor_clear();
-
     // Initialise the PIT to 100Hz
     asm volatile("sti");
     init_timer(50);
 
     // Start paging.
-    initialise_paging();
+    initialise_paging((mboot_ptr->mem_lower+mboot_ptr->mem_upper)/4);
 
     // Start multitasking.
     initialise_tasking();
