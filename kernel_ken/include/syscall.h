@@ -55,7 +55,7 @@ int syscall_##fn(P1 p1, P2 p2, P3 p3, P4 p4) \
   return a; \
 }
 
-#define DEFN_SYSCALL5(fn, num) \
+#define DEFN_SYSCALL5(fn, num, P1, P2, P3, P4, P5) \
 int syscall_##fn(P1 p1, P2 p2, P3 p3, P4 p4, P5 p5) \
 { \
   int a; \
