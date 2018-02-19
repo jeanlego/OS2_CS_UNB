@@ -5,7 +5,6 @@
 ;;;
 
         [global switch_task]
-        [global _create_task]
         [extern current_task]
         [extern task_exit]
         

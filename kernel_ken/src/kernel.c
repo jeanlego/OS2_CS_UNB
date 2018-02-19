@@ -13,14 +13,6 @@
 
 #include "user_app.h"
 
-
-int fn(void *arg)
-{
-	monitor_write("a");
-	monitor_write("\n ----- exit child ------- \n");
-	return 1;
-}
-
 /*  ##############################################################################
 		__ _     __      ___   ______
 	|/ |_ |_)|\||_ |      | |\| |  | 
@@ -48,10 +40,9 @@ int kernel_main(multiboot_t *mboot_ptr)
   monitor_write(" ### Kernel Ready ### \n");
 
 	// TODO add user apps here !
-	
- uint32_t *stack = kmalloc (0x400) + 0x3F0;
 
-  task_t *t = create_task(&fn, (void*)0x567, stack);
+  uint32_t pid = TASK_fork();
+  monitor_write_dec(pid);
   monitor_write("\n ----- exit parent ------- \n");
 
   

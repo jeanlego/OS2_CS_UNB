@@ -26,17 +26,12 @@ typedef struct task_list
 
 task_t *init_tasking ();
 
-task_t *create_task (int (*fn)(void*), void *arg, uint32_t *stack);
-
-struct task_list;
+uint32_t TASK_fork();
+void TASK_exit();
 
 void switch_task (struct task_list *next);
 
 void init_scheduler (task_t *initial_task);
-
-void task_is_ready (task_t *t);
-
-void task_not_ready (task_t *t);
 
 void schedule ();
 

@@ -11,11 +11,7 @@
 task_list_t *ready_queue = NULL;
 task_list_t *current_task = NULL;
 
-uint32_t next_tid = 0;
-
-void task_exit ();
-
-extern void _create_task(int (*)(void*), void*, uint32_t*, task_t*);
+uint32_t next_tid = 1;
 
 task_t *init_tasking ()
 {
@@ -27,25 +23,7 @@ task_t *init_tasking ()
   return task;
 }
 
-task_t *create_task (int (*fn)(void*), void *arg, uint32_t *stack)
-{
-  task_t *task = kmalloc (sizeof (task_t));
-  memset (task, 0, sizeof (task_t));
-  task->id = next_tid++;
-  
-  *--stack = (uint32_t)arg;
-  *--stack = (uint32_t)&task_exit;
-  *--stack = (uint32_t)fn;
-
-  task->esp = (uint32_t)stack;
-  task->ebp = 0;
-  task->eflags = 0x200; // Interrupts enabled.
-  task_is_ready(task);
-
-  return task;
-}
-
-void task_exit ()
+void TASK_exit()
 {
   register uint32_t val asm ("eax");
 
@@ -55,19 +33,31 @@ void task_exit ()
   for (;;) ;
 }
 
-void init_scheduler (task_t *initial_task)
+int fn(void *arg)
 {
-  current_task = (task_list_t*) kmalloc (sizeof (task_list_t*));
-  current_task->task = initial_task;
-  current_task->next = 0;
-  ready_queue = 0;
+	monitor_write("a");
+	monitor_write("\n ----- exit child ------- \n");
+	return 1;
 }
 
-void task_is_ready (task_t *t)
+uint32_t TASK_fork()
 {
-  // Create a new list item for the new task.
+  uint32_t *stack = kmalloc (0x400) + 0x3F0;
+  task_t *task = kmalloc (sizeof (task_t));
+  memset (task, 0, sizeof (task_t));
+  task->id = next_tid++;
+  
+  *--stack = (uint32_t)((void*)0x567);
+  *--stack = (uint32_t)&TASK_exit;
+  *--stack = (uint32_t)&fn;
+
+  task->esp = (uint32_t)stack;
+  task->ebp = 0;
+  task->eflags = 0x200; // Interrupts enabled.
+  
+    // Create a new list item for the new task.
   task_list_t *item = (task_list_t*) kmalloc (sizeof (task_list_t*));
-  item->task = t;
+  item->task = task;
   item->next = 0;
 
   if (!ready_queue)
@@ -85,31 +75,16 @@ void task_is_ready (task_t *t)
     // Add the item.
     iterator->next = item;
   }
+
+  return task->id;
 }
 
-void task_not_ready (task_t *t)
+void init_scheduler (task_t *initial_task)
 {
-  // Attempt to find the task in the ready queue.
-  task_list_t *iterator = ready_queue;
-
-  // Special case if the task is first in the queue.
-  if (iterator->task == t)
-  {
-    ready_queue = iterator->next;
-    kfree (iterator);
-    return;
-  }
-
-  while (iterator->next)
-  {
-    if (iterator->next->task == t)
-    {
-      task_list_t *tmp = iterator->next;
-      iterator->next = tmp->next;
-      kfree (tmp);
-    }
-    iterator = iterator->next;
-  }
+  current_task = (task_list_t*) kmalloc (sizeof (task_list_t*));
+  current_task->task = initial_task;
+  current_task->next = 0;
+  ready_queue = 0;
 }
 
 void schedule ()
