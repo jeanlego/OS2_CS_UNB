@@ -4,8 +4,9 @@
 //             Written for JamesM's kernel development tutorials.
 //
 
-#ifndef task_H
-#define task_H
+#ifndef USER_APP
+#ifndef TASK_H
+#define TASK_H
 
 #include "common.h"
 
@@ -23,5 +24,6 @@ struct task_list;
 
 void switch_task (struct task_list *next);
 
+#endif
 #endif
 

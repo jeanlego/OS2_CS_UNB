@@ -1,11 +1,13 @@
 // common.c -- Defines some global functions.
 //             From JamesM's kernel development tutorials.
 
+#ifndef USER_APP
+
 #include "common.h"
 #include <stddef.h>
 #include <stdint.h>
 #include "monitor.h"
-#include "heap.h"
+#include "kheap.h"
 
 #define ALIGN (sizeof(size_t))
 #define ONES ((size_t)-1/UCHAR_MAX)
@@ -516,3 +518,4 @@ void panic_assert(char *file, uint32_t line, char *desc)
     // Halt by going into an infinite loop.
     for(;;);
 }
+#endif

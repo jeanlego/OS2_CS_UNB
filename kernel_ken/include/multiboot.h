@@ -1,6 +1,7 @@
 // multiboot.h -- Declares the multiboot info structure.
 //                Made for JamesM's tutorials <www.jamesmolloy.co.uk>
 
+#ifndef USER_APP
 #ifndef MULTIBOOT_H
 #define MULTIBOOT_H
 
@@ -56,4 +57,5 @@ typedef struct
   uint32_t type;
 } __attribute__((packed)) mmap_entry_t;
 
+#endif
 #endif

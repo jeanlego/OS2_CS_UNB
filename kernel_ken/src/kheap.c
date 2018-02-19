@@ -1,10 +1,10 @@
-
+#ifndef USER_APP
 // 
 // heap.c -- Defines functions and structures for the kernel heap.
 //           Written for JamesM's kernel development tutorials.
 //
 
-#include "heap.h"
+#include "kheap.h"
 
 #include "paging.h"
 
@@ -128,3 +128,4 @@ void glue_chunk (header_t *chunk)
     free_chunk (chunk);
 }
 
+#endif

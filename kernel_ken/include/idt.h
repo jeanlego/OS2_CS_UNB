@@ -6,6 +6,7 @@
 //         Rewritten for JamesM's kernel development tutorials.
 //
 
+#ifndef USER_APP
 #ifndef IDT_H
 #define IDT_H
 
@@ -119,6 +120,7 @@ extern void irq13();
 extern void irq14();
 extern void irq15();
 
+#endif
 #endif
 
 

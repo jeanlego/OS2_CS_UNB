@@ -3,6 +3,7 @@
 // timer.h -- Defines the interface for all PIT-related functions.
 //            Written for JamesM's kernel development tutorials.
 
+#ifndef USER_APP
 #ifndef TIMER_H
 #define TIMER_H
 
@@ -10,5 +11,6 @@
 
 void init_timer (uint32_t frequency);
 
+#endif
 #endif
 

@@ -6,6 +6,7 @@
 //         Rewritten for JamesM's kernel development tutorials.
 //
 
+#ifndef USER_APP
 #include "common.h"
 #include "idt.h"
 #include "monitor.h"
@@ -160,3 +161,4 @@ void irq_handler(registers_t *regs)
 
 
 
+#endif

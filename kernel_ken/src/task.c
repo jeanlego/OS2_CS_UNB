@@ -1,11 +1,11 @@
-
+#ifndef USER_APP
 // 
 // task.c -- Defines functions and structures for multitasking.
 //             Written for JamesM's kernel development tutorials.
 //
 
 #include "task.h"
-#include "heap.h"
+#include "kheap.h"
 #include "monitor.h"
 #include "scheduler.h"
 
@@ -54,3 +54,4 @@ void task_exit ()
   for (;;) ;
 }
 
+#endif

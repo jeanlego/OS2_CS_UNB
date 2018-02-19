@@ -2,6 +2,7 @@
 // monitor.h -- Defines the interface for monitor code
 //              From JamesM's kernel development tutorials.
 
+#ifndef USER_APP
 #ifndef MONITOR_H
 #define MONITOR_H
 
@@ -22,5 +23,6 @@ void monitor_write_hex(uint32_t n);
 // Output a decimal value to the monitor.
 void monitor_write_dec(uint32_t n);
 
+#endif
 #endif // MONITOR_H
 

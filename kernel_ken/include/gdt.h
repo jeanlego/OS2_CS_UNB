@@ -6,6 +6,7 @@
 //         Rewritten for JamesM's kernel development tutorials.
 //
 
+#ifndef USER_APP
 #ifndef GDT_H
 #define GDT_H
 
@@ -36,6 +37,7 @@ typedef struct
     uint32_t base;        // The address of the first gdt_entry_t struct.
 } __attribute__((packed)) gdt_ptr_t;
 
+#endif
 #endif
 
 

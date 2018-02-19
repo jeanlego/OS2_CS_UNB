@@ -4,6 +4,7 @@
 //                Written for JamesM's kernel development tutorials.
 //
 
+#ifndef USER_APP
 #ifndef SCHEDULER_H
 #define SCHEDULER_H
 
@@ -24,4 +25,5 @@ void task_not_ready (task_t *t);
 
 void schedule ();
 
+#endif
 #endif

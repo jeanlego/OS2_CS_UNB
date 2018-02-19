@@ -4,8 +4,9 @@
 //          Written for JamesM's kernel development tutorials.
 //
 
-#ifndef VMM_H
-#define VMM_H
+#ifndef USER_APP
+#ifndef PAGING_H
+#define PAGING_H
 
 #include "common.h"
 #include "multiboot.h"
@@ -57,5 +58,6 @@ void unmap (uint32_t va);
 // If "*pa" is non-NULL, the physical address of the mapping is placed in *pa.
 char get_mapping (uint32_t va, uint32_t *pa);
 
+#endif
 #endif
 

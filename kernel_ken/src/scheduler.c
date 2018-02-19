@@ -1,11 +1,11 @@
-
+#ifndef USER_APP
 //
 // scheduler.c -- Defines functions and structures for preempting tasks.
 //                Written for JamesM's kernel development tutorials.
 //
 
 #include "scheduler.h"
-#include "heap.h"
+#include "kheap.h"
 
 task_list_t *ready_queue = 0;
 task_list_t *current_task = 0;
@@ -87,3 +87,4 @@ void schedule ()
   switch_task (new_task);
 }
 
+#endif

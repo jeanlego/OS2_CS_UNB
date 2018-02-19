@@ -1,4 +1,4 @@
-
+#ifndef USER_APP
 //
 // vmm.c -- Defines the functions related to paging and virtual memory management.
 //          Written for JamesM's kernel development tutorials.
@@ -217,3 +217,4 @@ void page_fault(registers_t *regs)
 
 
 
+#endif

@@ -1,3 +1,5 @@
+#ifndef USER_APP
+
 #include "kernel_ken.h"
 #include "multiboot.h"
 #include "common.h"
@@ -6,7 +8,7 @@
 #include "idt.h"
 #include "timer.h"
 #include "paging.h"
-#include "heap.h"
+#include "kheap.h"
 #include "task.h"
 #include "scheduler.h"
 #include "user_app.h"
@@ -304,3 +306,4 @@ int close_pipe(int fildes)
     // is not valid.
 
 
+#endif

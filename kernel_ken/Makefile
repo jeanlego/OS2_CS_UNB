@@ -11,7 +11,7 @@ ASMFLAGS=-felf32
 
 CFLAGS=-Wall -Wextra \
 -g -ggdb \
--m32 -nostdlib -fno-builtin -fno-stack-protector -ffreestanding -Wno-unused-variable -Wno-unused-parameter\
+-m32 -pedantic -nostdlib -fno-builtin -fno-stack-protector -ffreestanding -Wno-unused-variable -Wno-unused-parameter\
 -Iapi -DWITH_FRAME_POINTER  -T$(LINK_DEF)
 
 .phony: all
@@ -23,7 +23,7 @@ build: user kernel
 
 kernel: $(OBJ_SRC)
 	mkdir -p bin
-	$(CC) $(CFLAGS) $(OBJ_SRC) $(USER_APP).o $(C_SRC) -Iinclude -o $(KERNEL_OUT)
+	$(CC) $(CFLAGS) $(OBJ_SRC) $(C_SRC) $(USER_APP).o -Iinclude -o $(KERNEL_OUT)
 	
 user:
 	$(CC) -c $(CFLAGS) $(USER_APP).c -o $(USER_APP).o
