@@ -27,10 +27,8 @@ typedef struct task_list
 void TASK_init ();
 uint32_t TASK_fork();
 void TASK_exit();
-
-void switch_task (struct task_list *next);
-
-void schedule ();
+void TASK_schedule();
+uint32_t get_pid();
 
 #endif
 

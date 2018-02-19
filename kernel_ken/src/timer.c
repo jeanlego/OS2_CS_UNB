@@ -14,7 +14,7 @@ uint32_t tick = 0;
 static void timer_callback (registers_t *regs)
 {
   tick++;
-  schedule ();
+  TASK_schedule();
 }
 
 void init_timer (uint32_t frequency)

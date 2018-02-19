@@ -39,8 +39,21 @@ int kernel_main(multiboot_t *mboot_ptr)
 	// TODO add user apps here !
 
   uint32_t pid = TASK_fork();
-  monitor_write_dec(pid);
-  monitor_write("\n ----- exit parent ------- \n");
+  	monitor_write("fork_ret #");
+	monitor_write_dec(pid);
+	
+	monitor_write(" pid #");
+	monitor_write_dec(get_pid());
+	monitor_write(" ----- exiting parent ------- \n");
+	
+	  uint32_t pid1 = TASK_fork();
+  	monitor_write("fork_ret #");
+	monitor_write_dec(pid1);
+	
+	monitor_write(" pid #");
+	monitor_write_dec(get_pid());
+	monitor_write(" ----- exiting parent ------- \n");
+
 
   
   

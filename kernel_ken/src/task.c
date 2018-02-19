@@ -10,6 +10,7 @@
 
 task_list_t *ready_queue = NULL;
 task_list_t *current_task = NULL;
+extern void switch_task (struct task_list *next);
 
 uint32_t next_tid = 1;
 
@@ -36,8 +37,10 @@ void TASK_exit()
 
 int fn(void *arg)
 {
-	monitor_write("a");
-	monitor_write("\n ----- exit child ------- \n");
+  
+	monitor_write("pid #");
+	monitor_write_dec(get_pid());
+	monitor_write(" ----- exiting child ------- \n");
 	return 1;
 }
 
@@ -59,32 +62,28 @@ uint32_t TASK_fork()
     // Create a new list item for the new task.
   task_list_t *item = (task_list_t*) kmalloc (sizeof (task_list_t*));
   item->task = task;
-  item->next = 0;
+  item->next = ready_queue;
+  ready_queue = item;
+  // if (!ready_queue)
+  // {
+  //   // Special case if the ready queue is empty.
+  //   ready_queue = item;
+  // }
+  // else
+  // {
+  //   // Iterate through the ready queue to the end.
+  //   task_list_t *iterator = ready_queue;
+  //   while (iterator->next)
+  //     iterator = iterator->next;
 
-  if (!ready_queue)
-  {
-    // Special case if the ready queue is empty.
-    ready_queue = item;
-  }
-  else
-  {
-    // Iterate through the ready queue to the end.
-    task_list_t *iterator = ready_queue;
-    while (iterator->next)
-      iterator = iterator->next;
-
-    // Add the item.
-    iterator->next = item;
-  }
+  //   // Add the item.
+  //   iterator->next = item;
+  // }
 
   return task->id;
 }
 
-void init_scheduler (task_t *initial_task)
-{
-}
-
-void schedule()
+void TASK_schedule()
 {
   if (!ready_queue) return;
 
@@ -102,4 +101,9 @@ void schedule()
 
   // Switch to the new task.
   switch_task (new_task);
+}
+
+uint32_t get_pid()
+{
+  return current_task->task->id;
 }
