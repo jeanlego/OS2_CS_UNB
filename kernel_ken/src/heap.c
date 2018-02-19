@@ -5,20 +5,16 @@
 //
 
 #include "heap.h"
-#include "pmm.h"
-#include "vmm.h"
+
+#include "paging.h"
 
 static void alloc_chunk (uint32_t start, uint32_t len);
 static void free_chunk (header_t *chunk);
 static void split_chunk (header_t *chunk, uint32_t len);
 static void glue_chunk (header_t *chunk);
 
-uint32_t heap_max = HEAP_START;
-header_t *heap_first = 0;
-
-void init_heap ()
-{
-}
+extern uint32_t heap_max;
+extern header_t *heap_first;
 
 void *kmalloc (uint32_t l)
 {

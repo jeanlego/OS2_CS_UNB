@@ -1,6 +1,45 @@
 #include "kernel_ken.h"
+#include "multiboot.h"
+#include "common.h"
 #include "monitor.h"
-#include "error.h"
+#include "gdt.h"
+#include "idt.h"
+#include "timer.h"
+#include "paging.h"
+#include "heap.h"
+#include "task.h"
+#include "scheduler.h"
+#include "user_app.h"
+
+
+/*  ##############################################################################
+        __ _     __      ___   ______
+    |/ |_ |_)|\||_ |      | |\| |  | 
+    |\ |__| \| ||__|__   _|_| |_|_ |
+
+    kernel init phase
+*/
+
+int kernel_main(multiboot_t *mboot_ptr)
+{
+
+  monitor_clear();
+
+  monitor_write(" ### Kernel Initializing ### \n");
+
+  init_gdt ();
+  init_idt ();
+  init_timer (20);
+  init_paging(mboot_ptr);
+  asm volatile ("sti");
+  
+  task_t *kernel_task = init_tasking();
+  init_scheduler (kernel_task);
+  
+  monitor_write(" ### Kernel Ready ### \n");
+  user_app();
+}
+
 
 /*  ##############################################################################
      __  __      ___ 

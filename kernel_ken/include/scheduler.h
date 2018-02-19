@@ -1,6 +1,6 @@
 
 //
-// scheduler.h -- Defines functions and structures for preempting threads.
+// scheduler.h -- Defines functions and structures for preempting tasks.
 //                Written for JamesM's kernel development tutorials.
 //
 
@@ -8,19 +8,19 @@
 #define SCHEDULER_H
 
 #include "common.h"
-#include "thread.h"
+#include "task.h"
 
-typedef struct thread_list
+typedef struct task_list
 {
-  thread_t *thread;
-  struct thread_list *next;
-} thread_list_t;
+  task_t *task;
+  struct task_list *next;
+} task_list_t;
 
-void init_scheduler (thread_t *initial_thread);
+void init_scheduler (task_t *initial_task);
 
-void thread_is_ready (thread_t *t);
+void task_is_ready (task_t *t);
 
-void thread_not_ready (thread_t *t);
+void task_not_ready (task_t *t);
 
 void schedule ();
 

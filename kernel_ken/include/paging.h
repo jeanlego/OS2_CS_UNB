@@ -8,6 +8,7 @@
 #define VMM_H
 
 #include "common.h"
+#include "multiboot.h"
 
 #define PAGE_DIR_VIRTUAL_ADDR   0xFFBFF000
 #define PAGE_TABLE_VIRTUAL_ADDR 0xFFC00000
@@ -18,11 +19,29 @@
 #define PAGE_WRITE     0x2
 #define PAGE_USER      0x4
 #define PAGE_MASK      0xFFFFF000
+#define PMM_STACK_ADDR 0xFF000000
 
+
+#define HEAP_START 0xD0000000
+#define HEAP_END   0xFFBFF000
+
+typedef struct header
+{
+  struct header *prev, *next;
+  uint32_t allocated : 1;
+  uint32_t length : 31;
+} header_t;
+
+extern uint32_t heap_max;
+extern header_t *heap_first;
 typedef uint32_t page_directory_t;
 
 // Sets up the environment, page directories etc and enables paging.
-void init_vmm ();
+void init_paging (multiboot_t *mboot_ptr);
+
+uint32_t pmm_alloc_page ();
+
+void pmm_free_page (uint32_t p);
 
 // Changes address space.
 void switch_page_directory (page_directory_t *pd);

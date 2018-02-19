@@ -1,16 +1,16 @@
 
 ;;; 
-;;; thread.s -- Declares functions for thread switching.
+;;; task.s -- Declares functions for task switching.
 ;;;             Written for JamesM's kernel development tutorials.
 ;;;
 
-        [global switch_thread]
-        [global _create_thread]
-        [extern current_thread]
-        [extern thread_exit]
+        [global switch_task]
+        [global _create_task]
+        [extern current_task]
+        [extern task_exit]
         
-switch_thread:
-        mov eax, [current_thread]
+switch_task:
+        mov eax, [current_task]
         mov eax, [eax]
 
         mov [eax+0],  esp
@@ -25,7 +25,7 @@ switch_thread:
 
         mov eax, [esp+4]
 
-        mov [current_thread], eax
+        mov [current_task], eax
         mov eax, [eax]
         
         mov esp, [eax+0]

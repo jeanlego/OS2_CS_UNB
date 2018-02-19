@@ -1,28 +1,28 @@
 
 //
-// scheduler.c -- Defines functions and structures for preempting threads.
+// scheduler.c -- Defines functions and structures for preempting tasks.
 //                Written for JamesM's kernel development tutorials.
 //
 
 #include "scheduler.h"
 #include "heap.h"
 
-thread_list_t *ready_queue = 0;
-thread_list_t *current_thread = 0;
+task_list_t *ready_queue = 0;
+task_list_t *current_task = 0;
 
-void init_scheduler (thread_t *initial_thread)
+void init_scheduler (task_t *initial_task)
 {
-  current_thread = (thread_list_t*) kmalloc (sizeof (thread_list_t*));
-  current_thread->thread = initial_thread;
-  current_thread->next = 0;
+  current_task = (task_list_t*) kmalloc (sizeof (task_list_t*));
+  current_task->task = initial_task;
+  current_task->next = 0;
   ready_queue = 0;
 }
 
-void thread_is_ready (thread_t *t)
+void task_is_ready (task_t *t)
 {
-  // Create a new list item for the new thread.
-  thread_list_t *item = (thread_list_t*) kmalloc (sizeof (thread_list_t*));
-  item->thread = t;
+  // Create a new list item for the new task.
+  task_list_t *item = (task_list_t*) kmalloc (sizeof (task_list_t*));
+  item->task = t;
   item->next = 0;
 
   if (!ready_queue)
@@ -33,7 +33,7 @@ void thread_is_ready (thread_t *t)
   else
   {
     // Iterate through the ready queue to the end.
-    thread_list_t *iterator = ready_queue;
+    task_list_t *iterator = ready_queue;
     while (iterator->next)
       iterator = iterator->next;
 
@@ -42,13 +42,13 @@ void thread_is_ready (thread_t *t)
   }
 }
 
-void thread_not_ready (thread_t *t)
+void task_not_ready (task_t *t)
 {
-  // Attempt to find the thread in the ready queue.
-  thread_list_t *iterator = ready_queue;
+  // Attempt to find the task in the ready queue.
+  task_list_t *iterator = ready_queue;
 
-  // Special case if the thread is first in the queue.
-  if (iterator->thread == t)
+  // Special case if the task is first in the queue.
+  if (iterator->task == t)
   {
     ready_queue = iterator->next;
     kfree (iterator);
@@ -57,9 +57,9 @@ void thread_not_ready (thread_t *t)
 
   while (iterator->next)
   {
-    if (iterator->next->thread == t)
+    if (iterator->next->task == t)
     {
-      thread_list_t *tmp = iterator->next;
+      task_list_t *tmp = iterator->next;
       iterator->next = tmp->next;
       kfree (tmp);
     }
@@ -72,18 +72,18 @@ void schedule ()
   if (!ready_queue) return;
 
   // Iterate through the ready queue to the end.
-  thread_list_t *iterator = ready_queue;
+  task_list_t *iterator = ready_queue;
   while (iterator->next)
     iterator = iterator->next;
 
-  // Add the old thread to the end of the queue, and remove it from the start.
-  iterator->next = current_thread;
-  current_thread->next = 0;
-  thread_list_t *new_thread = ready_queue;
+  // Add the old task to the end of the queue, and remove it from the start.
+  iterator->next = current_task;
+  current_task->next = 0;
+  task_list_t *new_task = ready_queue;
 
   ready_queue = ready_queue->next;
 
-  // Switch to the new thread.
-  switch_thread (new_thread);
+  // Switch to the new task.
+  switch_task (new_task);
 }
 
