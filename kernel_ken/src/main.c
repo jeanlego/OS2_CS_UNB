@@ -11,6 +11,7 @@
 #include "vmm.h"
 #include "heap.h"
 #include "thread.h"
+#include "scheduler.h"
 
 int fn(void *arg)
 {
