@@ -16,7 +16,7 @@ volatile task_t *current_task;
 // The start of the task linked list.
 volatile task_t *ready_queue;
 
-extern void perform_task_switch(u32int, u32int, u32int, u32int);
+extern void perform_task_switch(uint32_t a, uint32_t b, uint32_t c, uint32_t d);
 
 // Some externs are needed to access members in paging.c...
 extern page_directory_t *kernel_directory;
