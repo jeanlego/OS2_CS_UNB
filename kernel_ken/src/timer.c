@@ -1,4 +1,4 @@
-#ifndef USER_APP
+
 //
 // timer.c -- Initialises the PIT, and handles clock updates.
 //            Written for JamesM's kernel development tutorials.
@@ -7,8 +7,6 @@
 #include "common.h"
 #include "timer.h"
 #include "idt.h"
-
-#include "scheduler.h"
 
 
 uint32_t tick = 0;
@@ -40,5 +38,3 @@ void init_timer (uint32_t frequency)
   outb(0x40, l);
   outb(0x40, h);
 }
-
-#endif

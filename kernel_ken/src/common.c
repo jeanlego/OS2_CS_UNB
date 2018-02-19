@@ -1,7 +1,7 @@
 // common.c -- Defines some global functions.
 //             From JamesM's kernel development tutorials.
 
-#ifndef USER_APP
+
 
 #include "common.h"
 #include <stddef.h>
@@ -518,4 +518,3 @@ void panic_assert(char *file, uint32_t line, char *desc)
     // Halt by going into an infinite loop.
     for(;;);
 }
-#endif

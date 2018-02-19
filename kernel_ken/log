@@ -1,6 +1,80 @@
-src/main.c: In function ‘kernel_main’:
-src/main.c:68:3: warning: implicit declaration of function ‘init_scheduler’; did you mean ‘init_heap’? [-Wimplicit-function-declaration]
-   init_scheduler (kernel_task);
-   ^~~~~~~~~~~~~~
-   init_heap
+api/user_app.c: In function ‘user_app’:
+api/user_app.c:11:10: warning: ‘return’ with a value, in function returning void
+   return 0;
+          ^
+api/user_app.c:4:6: note: declared here
+ void user_app()
+      ^~~~~~~~
+src/task.c: In function ‘init_tasking’:
+src/task.c:25:16: warning: assignment from incompatible pointer type [-Wincompatible-pointer-types]
+   current_task = task;
+                ^
+src/timer.c: In function ‘timer_callback’:
+src/timer.c:17:3: warning: implicit declaration of function ‘schedule’ [-Wimplicit-function-declaration]
+   schedule ();
+   ^~~~~~~~
+src/kernel.c: In function ‘kernel_main’:
+src/kernel.c:52:36: warning: pointer of type ‘void *’ used in arithmetic [-Wpointer-arith]
+  uint32_t *stack = kmalloc (0x400) + 0x3F0;
+                                    ^
+src/kernel.c: In function ‘print’:
+src/kernel.c:75:16: warning: passing argument 1 of ‘monitor_write’ discards ‘const’ qualifier from pointer target type [-Wdiscarded-qualifiers]
+  monitor_write(string);
+                ^~~~~~
+In file included from src/kernel.c:6:0:
+include/monitor.h:18:6: note: expected ‘char *’ but argument is of type ‘const char *’
+ void monitor_write(char *c);
+      ^~~~~~~~~~~~~
+src/kernel.c: In function ‘fork’:
+src/kernel.c:161:9: warning: return makes integer from pointer without a cast [-Wint-conversion]
+  return NULL;
+         ^~~~
+src/kernel.c: In function ‘sleep’:
+src/kernel.c:190:9: warning: return makes integer from pointer without a cast [-Wint-conversion]
+  return NULL;
+         ^~~~
+src/kernel.c: In function ‘getpid’:
+src/kernel.c:201:9: warning: return makes integer from pointer without a cast [-Wint-conversion]
+  return NULL;
+         ^~~~
+src/kernel.c: In function ‘setpriority’:
+src/kernel.c:208:9: warning: return makes integer from pointer without a cast [-Wint-conversion]
+  return NULL;
+         ^~~~
+src/kernel.c: In function ‘open_sem’:
+src/kernel.c:231:9: warning: return makes integer from pointer without a cast [-Wint-conversion]
+  return NULL;
+         ^~~~
+src/kernel.c: In function ‘wait’:
+src/kernel.c:241:9: warning: return makes integer from pointer without a cast [-Wint-conversion]
+  return NULL;
+         ^~~~
+src/kernel.c: In function ‘signal’:
+src/kernel.c:253:9: warning: return makes integer from pointer without a cast [-Wint-conversion]
+  return NULL;
+         ^~~~
+src/kernel.c: In function ‘close_sem’:
+src/kernel.c:266:9: warning: return makes integer from pointer without a cast [-Wint-conversion]
+  return NULL;
+         ^~~~
+src/kernel.c: In function ‘open_pipe’:
+src/kernel.c:290:9: warning: return makes integer from pointer without a cast [-Wint-conversion]
+  return NULL;
+         ^~~~
+src/kernel.c: In function ‘write’:
+src/kernel.c:299:9: warning: return makes integer from pointer without a cast [-Wint-conversion]
+  return NULL;
+         ^~~~
+src/kernel.c: In function ‘read’:
+src/kernel.c:309:9: warning: return makes integer from pointer without a cast [-Wint-conversion]
+  return NULL;
+         ^~~~
+src/kernel.c: In function ‘close_pipe’:
+src/kernel.c:319:9: warning: return makes integer from pointer without a cast [-Wint-conversion]
+  return NULL;
+         ^~~~
+src/kernel.c: In function ‘kernel_main’:
+src/kernel.c:60:1: warning: control reaches end of non-void function [-Wreturn-type]
+ }
+ ^
 /usr/bin/ld: warning: .note.gnu.build-id section discarded, --build-id ignored.

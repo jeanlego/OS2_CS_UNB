@@ -1,4 +1,4 @@
-#ifndef USER_APP
+
 // monitor.c -- Defines functions for writing to the monitor.
 //              heavily based on Bran's kernel development tutorials,
 //              but rewritten for JamesM's kernel tutorials.
@@ -176,4 +176,3 @@ void monitor_write_dec(uint32_t n)
   monitor_write(c2);
 }
 
-#endif
