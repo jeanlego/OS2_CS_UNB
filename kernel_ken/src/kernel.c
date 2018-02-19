@@ -32,10 +32,7 @@ int kernel_main(multiboot_t *mboot_ptr)
   init_idt ();
   init_timer (20);
   init_paging(mboot_ptr);
-  asm volatile ("sti");
-  
-  task_t *kernel_task = init_tasking();
-  init_scheduler (kernel_task);
+  TASK_init();
   
   monitor_write(" ### Kernel Ready ### \n");
 

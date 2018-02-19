@@ -13,14 +13,15 @@ task_list_t *current_task = NULL;
 
 uint32_t next_tid = 1;
 
-task_t *init_tasking ()
+void TASK_init ()
 {
   task_t *task = kmalloc (sizeof (task_t));
   task->id  = next_tid++;
-  
-  current_task = task;
-
-  return task;
+  current_task = (task_list_t*) kmalloc (sizeof (task_list_t*));
+  current_task->task = task;
+  current_task->next = 0;
+  ready_queue = 0;
+  asm volatile ("sti");
 }
 
 void TASK_exit()
@@ -81,13 +82,9 @@ uint32_t TASK_fork()
 
 void init_scheduler (task_t *initial_task)
 {
-  current_task = (task_list_t*) kmalloc (sizeof (task_list_t*));
-  current_task->task = initial_task;
-  current_task->next = 0;
-  ready_queue = 0;
 }
 
-void schedule ()
+void schedule()
 {
   if (!ready_queue) return;
 

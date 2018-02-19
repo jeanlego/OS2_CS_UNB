@@ -24,14 +24,11 @@ typedef struct task_list
 } task_list_t;
 
 
-task_t *init_tasking ();
-
+void TASK_init ();
 uint32_t TASK_fork();
 void TASK_exit();
 
 void switch_task (struct task_list *next);
-
-void init_scheduler (task_t *initial_task);
 
 void schedule ();
 
