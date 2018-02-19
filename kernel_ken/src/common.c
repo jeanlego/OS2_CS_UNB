@@ -5,7 +5,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include "monitor.h"
-#include "kheap.h"
+#include "heap.h"
 
 #define ALIGN (sizeof(size_t))
 #define ONES ((size_t)-1/UCHAR_MAX)
@@ -52,7 +52,7 @@ void * memcpy(void * restrict dest, const void * restrict src, size_t n) {
 	return dest;
 }
 
-void * memset(void * dest, int c, size_t n) {
+void * checked_memset(void * dest, int c, size_t n) {
 	asm volatile("cld; rep stosb"
 	             : "=c"((int){0})
 	             : "D"(dest), "a"(c), "c"(n)
@@ -483,7 +483,7 @@ char * strtok_r(char * str, const char * delim, char ** saveptr) {
 
 void break_point(){  return; }
 
-extern void panic(char *message, char *file, uint32_t line)
+void panic(char *message, char *file, uint32_t line)
 {
     break_point();   
     // We encountered a massive problem and have to stop.
@@ -500,7 +500,7 @@ extern void panic(char *message, char *file, uint32_t line)
     for(;;);
 }
 
-extern void panic_assert(char *file, uint32_t line, char *desc)
+void panic_assert(char *file, uint32_t line, char *desc)
 {
     break_point();
     // An assertion failed, and we have to panic.

@@ -10,7 +10,7 @@ ASMFLAGS=-felf32
 
 CFLAGS=-Wall -Wextra \
 -g -ggdb \
--m32 -nostdlib -fno-builtin -fno-stack-protector -ffreestanding \
+-m32 -nostdlib -fno-builtin -fno-stack-protector -ffreestanding -Wno-unused-variable -Wno-unused-parameter\
 -Iinclude -DWITH_FRAME_POINTER  -T$(LINK_DEF)
 
 .phony: all

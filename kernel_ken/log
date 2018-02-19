@@ -1,0 +1,6 @@
+src/main.c: In function ‘kernel_main’:
+src/main.c:68:3: warning: implicit declaration of function ‘init_scheduler’; did you mean ‘init_heap’? [-Wimplicit-function-declaration]
+   init_scheduler (kernel_thread);
+   ^~~~~~~~~~~~~~
+   init_heap
+/usr/bin/ld: warning: .note.gnu.build-id section discarded, --build-id ignored.

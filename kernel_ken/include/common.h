@@ -33,7 +33,8 @@ void break_point();
 #define MAX(A, B) ((A) > (B) ? (A) : (B))
 
 extern void * memcpy(void * restrict dest, const void * restrict src, size_t n);
-extern void * memset(void * dest, int c, size_t n);
+extern void * checked_memset(void * dest, int c, size_t n);
+#define memset(dest,c,n) checked_memset((void *) dest,c,n);
 extern void * memchr(const void * src, int c, size_t n);
 extern void * memrchr(const void * m, int c, size_t n);
 extern void * memmove(void *dest, const void *src, size_t n);
