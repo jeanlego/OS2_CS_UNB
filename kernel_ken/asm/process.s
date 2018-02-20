@@ -36,26 +36,14 @@ copy_page_physical:
     pop ebx               ; Get the original value of EBX back.
     ret
     
-    
-    
-    global swtch
-swtch:
-	mov eax, [esp + 4]	; old stack ptr
-	mov edx, [esp + 8]	; new stack ptr
-
-	pushfd			; push regs to current ctx
-	push ebp
-	push ebx
-	push esi
-	push edi
-
-	mov [eax], esp		; update old ctx ptr with current stack ptr
-	mov esp, edx		; switch to new stack
-
-	pop edi			; pop saved stack of previous task
-	pop esi
-	pop ebx
-	pop ebp
-	popfd
-
-	ret
+[GLOBAL perform_task_switch]
+perform_task_switch:
+     cli;
+     mov ecx, [esp+4]   ; EIP
+     mov eax, [esp+8]   ; physical address of current directory
+     mov ebp, [esp+12]  ; EBP
+     mov esp, [esp+16]  ; ESP
+     mov cr3, eax       ; set the page directory
+     mov eax, 0x12345   ; magic number to detect a task switch
+     sti;
+     jmp ecx

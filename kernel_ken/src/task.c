@@ -20,6 +20,7 @@ extern page_directory_t *current_directory;
 extern void alloc_frame(page_t*,int,int);
 extern uint32_t initial_esp;
 extern uint32_t read_eip();
+extern void perform_task_switch(u32int, u32int, u32int, u32int);
 
 // The next available process ID.
 uint32_t next_pid = 1;
@@ -152,16 +153,7 @@ void task_switch()
     // * Restart interrupts. The STI instruction has a delay - it doesn't take effect until after
     //   the next instruction.
     // * Jump to the location in ECX (remember we put the new EIP in there).
-    asm volatile("         \
-      cli;                 \
-      mov %0, %%ecx;       \
-      mov %1, %%esp;       \
-      mov %2, %%ebp;       \
-      mov %3, %%cr3;       \
-      mov $0x12345, %%eax; \
-      sti;                 \
-      jmp *%%ecx           "
-                 : : "r"(eip), "r"(esp), "r"(ebp), "r"(current_directory->physicalAddr));
+    perform_task_switch(eip, current_directory->physicalAddr, ebp, esp);
 }
 
 int fork()

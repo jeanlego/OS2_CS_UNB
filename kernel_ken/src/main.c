@@ -30,12 +30,29 @@ int kernel_main(struct multiboot *mboot_ptr, uint32_t initial_stack)
     // Start multitasking.
     initialise_tasking();
     
+            // Create a new process in a new address space which is a clone of this
 
-    initialise_syscalls();
+        int ret = fork();
+        monitor_write("fork(");
+        monitor_write(") returned ");
+        monitor_write_hex(ret);
+        monitor_write(", and getpid() returned ");
+        monitor_write_hex(getpid());
+        monitor_write("\n============================================================================\n");
 
-    switch_to_user_mode();
+            int ret1 = fork();
+        monitor_write("fork(");
+        monitor_write(") returned ");
+        monitor_write_hex(ret1);
+        monitor_write(", and getpid() returned ");
+        monitor_write_hex(getpid());
+        monitor_write("\n============================================================================\n");
 
-    syscall_monitor_write("Hello, user world!\n");
+    // initialise_syscalls();
+
+    // switch_to_user_mode();
+
+    // syscall_monitor_write("Hello, user world!\n");
 
     return 0;
 }
